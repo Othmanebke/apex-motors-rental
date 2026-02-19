@@ -9,19 +9,29 @@ import FAQ from '../components/FAQ'
 import NewsSection from '../components/NewsSection'
 import CtaBanner from '../components/CtaBanner'
 import ReservationModal from '../components/ReservationModal'
+import TireTracks from '../components/TireTracks'
 
 export default function HomePage() {
   const [selectedCar, setSelectedCar] = useState(null)
 
   return (
     <>
+      {/* Traces de pneu haut gauche — décoratives */}
+      <TireTracks variant="topleft" />
+
       <Hero />
       <ChooseYourRide onBook={setSelectedCar} />
       <RentalTerms />
       <Testimonials />
       <HowItWorks />
       <PremiumService />
-      <FAQ />
+
+      {/* Traces de pneu près de la FAQ */}
+      <div style={{ position: 'relative' }}>
+        <TireTracks variant="faq" />
+        <FAQ />
+      </div>
+
       <NewsSection />
       <CtaBanner />
       {selectedCar && (
