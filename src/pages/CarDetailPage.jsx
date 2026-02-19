@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { cars, getBookedRanges, OPTIONS } from '../data/cars'
 import ReservationModal from '../components/ReservationModal'
@@ -157,6 +157,50 @@ export default function CarDetailPage() {
   const [selectedOptions, setSelectedOptions] = useState([])
   const [modalOpen, setModalOpen] = useState(false)
   const [modalCar, setModalCar] = useState(null)
+  const [copied, setCopied] = useState(false)
+  const [reviews, setReviews] = useState(() => {
+    try { return JSON.parse(localStorage.getItem(`apexReviews_${id}`) || '[]') } catch { return [] }
+  })
+  const [reviewForm, setReviewForm] = useState({ stars: 0, hover: 0, text: '', author: '' })
+  const [reviewSubmitted, setReviewSubmitted] = useState(false)
+
+  // Sync reviews when navigating between cars
+  useEffect(() => {
+    try { setReviews(JSON.parse(localStorage.getItem(`apexReviews_${id}`) || '[]')) } catch {}
+    setReviewSubmitted(false)
+  }, [id])
+
+  const shareUrl = () => {
+    const url = window.location.href
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(url)
+        .then(() => { setCopied(true); setTimeout(() => setCopied(false), 2500) })
+        .catch(() => {})
+    } else {
+      setCopied(true); setTimeout(() => setCopied(false), 2500)
+    }
+  }
+
+  const submitReview = () => {
+    if (!reviewForm.stars || !reviewForm.text.trim()) return
+    const newReview = {
+      id: Date.now(),
+      stars: reviewForm.stars,
+      text: reviewForm.text.trim(),
+      author: reviewForm.author.trim() || 'Anonyme',
+      date: new Date().toLocaleDateString('fr-FR'),
+    }
+    const next = [newReview, ...reviews]
+    setReviews(next)
+    localStorage.setItem(`apexReviews_${id}`, JSON.stringify(next))
+    setReviewForm({ stars: 0, hover: 0, text: '', author: '' })
+    setReviewSubmitted(true)
+    setTimeout(() => setReviewSubmitted(false), 3000)
+  }
+
+  const avgStars = reviews.length
+    ? (reviews.reduce((a, r) => a + r.stars, 0) / reviews.length).toFixed(1)
+    : null
 
   if (!car) {
     return (
@@ -296,10 +340,18 @@ export default function CarDetailPage() {
             <div className="detail-price">
               <span className="detail-price__amount">{car.priceDay}€</span>
               <span className="detail-price__unit">/jour</span>
+              {avgStars && (
+                <span className="detail-avg-stars">★ {avgStars} <span className="detail-avg-count">({reviews.length} avis)</span></span>
+              )}
             </div>
-            <button className="btn-red detail-reserve-btn" onClick={openReservation}>
-              Réserver maintenant
-            </button>
+            <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap' }}>
+              <button className="share-btn" onClick={shareUrl} title="Copier le lien">
+                {copied ? '✓ Lien copié !' : '🔗 Partager'}
+              </button>
+              <button className="btn-red detail-reserve-btn" onClick={openReservation}>
+                Réserver maintenant
+              </button>
+            </div>
           </div>
         </div>
       </section>
@@ -357,6 +409,80 @@ export default function CarDetailPage() {
       <div className="detail-back">
         <button className="detail-back__btn" onClick={() => navigate(-1)}>← Retour au catalogue</button>
       </div>
+
+      {/* ── REVIEWS ── */}
+      <section className="detail-section detail-reviews">
+        <h2 className="detail-section__title">
+          Avis clients
+          {avgStars && <span className="reviews-avg">★ {avgStars} <span>({reviews.length} avis)</span></span>}
+        </h2>
+
+        {/* Form */}
+        <div className="review-form">
+          <h3 className="review-form__title">Laisser un avis</h3>
+          <div className="review-stars-input">
+            {[1,2,3,4,5].map(star => (
+              <button
+                key={star}
+                className={`star-btn ${star <= (reviewForm.hover || reviewForm.stars) ? 'active' : ''}`}
+                onMouseEnter={() => setReviewForm(f => ({ ...f, hover: star }))}
+                onMouseLeave={() => setReviewForm(f => ({ ...f, hover: 0 }))}
+                onClick={() => setReviewForm(f => ({ ...f, stars: star }))}
+                aria-label={`${star} étoile${star > 1 ? 's' : ''}`}
+              >★</button>
+            ))}
+            {reviewForm.stars > 0 && (
+              <span className="star-hint">{['','Médiocre','Passable','Bien','Très bien','Excellent !'][reviewForm.stars]}</span>
+            )}
+          </div>
+          <input
+            className="review-input"
+            placeholder="Votre prénom (optionnel)"
+            value={reviewForm.author}
+            onChange={e => setReviewForm(f => ({ ...f, author: e.target.value }))}
+          />
+          <textarea
+            className="review-textarea"
+            placeholder="Partagez votre expérience avec ce véhicule…"
+            rows={3}
+            value={reviewForm.text}
+            onChange={e => setReviewForm(f => ({ ...f, text: e.target.value }))}
+          />
+          {reviewSubmitted ? (
+            <div className="review-thanks">✓ Merci pour votre avis !</div>
+          ) : (
+            <button
+              className="btn-red review-submit"
+              disabled={!reviewForm.stars || !reviewForm.text.trim()}
+              onClick={submitReview}
+            >
+              Publier l'avis
+            </button>
+          )}
+        </div>
+
+        {/* List */}
+        {reviews.length > 0 ? (
+          <div className="reviews-list">
+            {reviews.map(r => (
+              <div key={r.id} className="review-item">
+                <div className="review-item__header">
+                  <span className="review-item__author">{r.author}</span>
+                  <span className="review-item__stars">
+                    {[1,2,3,4,5].map(s => (
+                      <span key={s} className={s <= r.stars ? 'star--on' : 'star--off'}>★</span>
+                    ))}
+                  </span>
+                  <span className="review-item__date">{r.date}</span>
+                </div>
+                <p className="review-item__text">{r.text}</p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="reviews-empty">Soyez le premier à laisser un avis sur ce véhicule.</p>
+        )}
+      </section>
 
       {modalOpen && modalCar && (
         <ReservationModal car={modalCar} onClose={() => setModalOpen(false)} />

@@ -73,7 +73,8 @@ export default function Navbar() {
       <ul className="navbar-links">
         <li><Link to="/cars" className={pathname === '/cars' ? 'active' : ''}>Nos voitures</Link></li>
         <li><Link to="/#terms">Conditions</Link></li>
-        <li><Link to="/#news">Actualités</Link></li>
+        <li><Link to="/#offers">Forfaits</Link></li>
+        <li><Link to="/reservations" className={pathname === '/reservations' ? 'active' : ''}>Mes réservations</Link></li>
       </ul>
 
       <div className="navbar-right">

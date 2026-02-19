@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react'
+import { Link } from 'react-router-dom'
 import { OPTIONS } from '../data/cars'
 import { differenceInDays, addMonths, startOfMonth, getDay, getDaysInMonth, format, isBefore, isToday } from 'date-fns'
 import { fr } from 'date-fns/locale'
@@ -66,7 +67,7 @@ export default function ReservationModal({ car, onClose }) {
   const [endDate, setEndDate] = useState(null)
   const [pickingEnd, setPickingEnd] = useState(false)
   const [selectedOptions, setSelectedOptions] = useState([])
-  const [step, setStep] = useState(1) // 1=dates, 2=options, 3=confirm
+  const [step, setStep] = useState(1) // 1=dates, 2=options, 3=confirm, 4=done
 
   const handleDateSelect = useCallback((date) => {
     if (!startDate || pickingEnd) {
@@ -95,8 +96,23 @@ export default function ReservationModal({ car, onClose }) {
   }
 
   const handleConfirm = () => {
-    alert(`✅ Réservation confirmée !\n\n${car.name}\n${format(startDate, 'dd/MM/yyyy')} → ${format(endDate, 'dd/MM/yyyy')}\n${days} jour${days > 1 ? 's' : ''}\n\nTotal : ${total.toLocaleString('fr-FR')} €\n\nNotre équipe vous contactera dans les 30 minutes.`)
-    onClose()
+    // Sauvegarder dans l'historique localStorage
+    const reservation = {
+      id: `res_${Date.now()}`,
+      carId: car.id,
+      startDate: startDate.toISOString(),
+      endDate: endDate.toISOString(),
+      days,
+      total,
+      options: selectedOptions.map(id => OPTIONS.find(o => o.id === id)?.label).filter(Boolean),
+      status: 'confirmed',
+      createdAt: new Date().toISOString(),
+    }
+    try {
+      const existing = JSON.parse(localStorage.getItem('apexHistory') || '[]')
+      localStorage.setItem('apexHistory', JSON.stringify([reservation, ...existing]))
+    } catch {}
+    setStep(4)
   }
 
   return (
@@ -105,8 +121,9 @@ export default function ReservationModal({ car, onClose }) {
         <div className="modal-header">
           <span className="modal-title">
             {step === 1 && '📅 Sélectionner les dates'}
-            {step === 2 && '⧗ Options supplémentaires'}
+            {step === 2 && '⚙️ Options supplémentaires'}
             {step === 3 && '✅ Confirmer la réservation'}
+            {step === 4 && '🎉 Réservation confirmée !'}
           </span>
           <button className="modal-close" onClick={onClose}>✕</button>
         </div>
@@ -253,6 +270,26 @@ export default function ReservationModal({ car, onClose }) {
               >
                 Confirmer la réservation 🚗
               </button>
+            </div>
+          </div>
+        )}
+
+        {/* ─── STEP 4: Done ─── */}
+        {step === 4 && (
+          <div className="modal-done">
+            <div className="modal-done__icon">🎉</div>
+            <h3 className="modal-done__title">Réservation confirmée !</h3>
+            <p className="modal-done__sub">Notre équipe vous contacte dans les <strong>30 minutes</strong>.</p>
+            <div className="modal-done__recap">
+              <div className="modal-done__row"><span>Véhicule</span><strong>{car.name}</strong></div>
+              <div className="modal-done__row"><span>Du</span><strong>{startDate && format(startDate, 'dd/MM/yyyy')}</strong></div>
+              <div className="modal-done__row"><span>Au</span><strong>{endDate && format(endDate, 'dd/MM/yyyy')}</strong></div>
+              <div className="modal-done__row"><span>Durée</span><strong>{days} jour{days > 1 ? 's' : ''}</strong></div>
+              <div className="modal-done__row modal-done__row--total"><span>Total</span><strong>{total.toLocaleString('fr-FR')} €</strong></div>
+            </div>
+            <div className="modal-done__actions">
+              <Link to="/reservations" className="modal-done__btn-link" onClick={onClose}>Voir mes réservations →</Link>
+              <button className="modal-done__btn-close" onClick={onClose}>Fermer</button>
             </div>
           </div>
         )}

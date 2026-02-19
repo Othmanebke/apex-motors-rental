@@ -8,6 +8,7 @@ import PremiumService from '../components/PremiumService'
 import FAQ from '../components/FAQ'
 import NewsSection from '../components/NewsSection'
 import CtaBanner from '../components/CtaBanner'
+import OffersSection from '../components/OffersSection'
 import ReservationModal from '../components/ReservationModal'
 
 export default function HomePage() {
@@ -17,6 +18,7 @@ export default function HomePage() {
     <>
       <Hero />
       <ChooseYourRide onBook={setSelectedCar} />
+      <OffersSection />
       <RentalTerms />
       <Testimonials />
       <HowItWorks />
