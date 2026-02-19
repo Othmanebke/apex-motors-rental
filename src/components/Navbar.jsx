@@ -22,6 +22,10 @@ const IconClose = () => (
   </svg>
 )
 
+function getWishlistCount() {
+  try { return JSON.parse(localStorage.getItem('apexWishlist') || '[]').length } catch { return 0 }
+}
+
 export default function Navbar() {
   const { pathname } = useLocation()
   const navigate = useNavigate()
@@ -29,7 +33,17 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
+  const [favCount, setFavCount] = useState(getWishlistCount)
   const searchRef = useRef(null)
+
+  // Sync badge quand le localStorage change (même onglet ou autre page)
+  useEffect(() => {
+    const sync = () => setFavCount(getWishlistCount())
+    window.addEventListener('storage', sync)
+    // Polling léger pour détecter les changements dans le même onglet
+    const id = setInterval(sync, 800)
+    return () => { window.removeEventListener('storage', sync); clearInterval(id) }
+  }, [])
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
@@ -81,7 +95,14 @@ export default function Navbar() {
         ) : (
           <>
             <button className="navbar-icon" title="Rechercher" onClick={() => setSearchOpen(true)}><IconSearch /></button>
-            <button className="navbar-icon" title="Favoris"><IconHeart /></button>
+            <button
+              className="navbar-icon navbar-heart"
+              title={favCount > 0 ? `${favCount} coup${favCount > 1 ? 's' : ''} de cœur` : 'Coups de cœur'}
+              onClick={() => navigate('/cars?favs=1')}
+            >
+              <IconHeart />
+              {favCount > 0 && <span className="navbar-heart-badge">{favCount}</span>}
+            </button>
             <button className="navbar-icon navbar-icon--menu" title="Menu" onClick={() => setMenuOpen(!menuOpen)}>
               <IconMenu />
             </button>

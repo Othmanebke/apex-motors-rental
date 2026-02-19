@@ -70,7 +70,13 @@ export default function CarsPage() {
   const heroRef = useRef(null)
   const [heroVisible, setHeroVisible] = useState(false)
 
-  const searchQ = searchParams.get('q') || ''
+  const searchQ  = searchParams.get('q')    || ''
+  const favsParam = searchParams.get('favs') === '1'
+
+  // Activer "coup de cœur" si URL contient ?favs=1
+  useEffect(() => {
+    if (favsParam) setFavOnly(true)
+  }, [favsParam])
 
   useEffect(() => { setPage(1) }, [searchQ, activeFilters, sort, favOnly])
 

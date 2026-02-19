@@ -144,6 +144,20 @@ img { display: block; }
 }
 .navbar-icon:hover { color: var(--white); background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.18); }
 .navbar-icon--menu { display: none; }
+
+/* Cœur navbar avec badge */
+.navbar-heart { position: relative; }
+.navbar-heart:hover { color: var(--racing-red) !important; border-color: rgba(230,57,70,0.4) !important; }
+.navbar-heart-badge {
+  position: absolute; top: -5px; right: -5px;
+  background: var(--racing-red); color: #fff;
+  font-size: 0.58rem; font-weight: 800;
+  width: 16px; height: 16px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  border: 1.5px solid var(--bg);
+  animation: badgePop 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes badgePop { from { transform: scale(0) } to { transform: scale(1) } }
 /* Search inline form */
 .navbar-search-form {
   display: flex;
