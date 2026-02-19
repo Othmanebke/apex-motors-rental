@@ -21,6 +21,33 @@ const IconClose = () => (
     <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
   </svg>
 )
+const IconChevron = () => (
+  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="6 9 12 15 18 9"/>
+  </svg>
+)
+const IconCar = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M5 17H3a2 2 0 0 1-2-2V9l2.5-5h11L17 9v6a2 2 0 0 1-2 2h-2"/>
+    <circle cx="7.5" cy="17.5" r="2.5"/>
+    <circle cx="14.5" cy="17.5" r="2.5"/>
+  </svg>
+)
+const IconTag = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+    <line x1="7" y1="7" x2="7.01" y2="7"/>
+  </svg>
+)
+const IconBooking = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+    <line x1="16" y1="2" x2="16" y2="6"/>
+    <line x1="8" y1="2" x2="8" y2="6"/>
+    <line x1="3" y1="10" x2="21" y2="10"/>
+    <line x1="8" y1="14" x2="16" y2="14"/>
+  </svg>
+)
 
 function getWishlistCount() {
   try { return JSON.parse(localStorage.getItem('apexWishlist') || '[]').length } catch { return 0 }
@@ -34,7 +61,17 @@ export default function Navbar() {
   const [searchOpen, setSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [favCount, setFavCount] = useState(getWishlistCount)
+  const [logeOpen, setLogeOpen] = useState(false)
   const searchRef = useRef(null)
+  const logeRef = useRef(null)
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (logeRef.current && !logeRef.current.contains(e.target)) setLogeOpen(false)
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [])
 
   // Sync badge quand le localStorage change (même onglet ou autre page)
   useEffect(() => {
@@ -71,10 +108,30 @@ export default function Navbar() {
       </Link>
 
       <ul className="navbar-links">
-        <li><Link to="/cars" className={pathname === '/cars' ? 'active' : ''}>Nos voitures</Link></li>
-        <li><Link to="/#terms">Conditions</Link></li>
-        <li><Link to="/#offers">Forfaits</Link></li>
-        <li><Link to="/reservations" className={pathname === '/reservations' ? 'active' : ''}>Mes réservations</Link></li>
+        <li><Link to="/" className={pathname === '/' ? 'active' : ''}>Accueil</Link></li>
+        <li className="navbar-loge" ref={logeRef}>
+          <button
+            className={`navbar-loge__trigger${logeOpen ? ' open' : ''}`}
+            onClick={() => setLogeOpen(v => !v)}
+          >
+            Explorer
+            <span className={`loge-chevron${logeOpen ? ' rotated' : ''}`}><IconChevron /></span>
+          </button>
+          <div className={`navbar-loge__panel${logeOpen ? ' visible' : ''}`}>
+            <Link to="/cars" className="loge-item" onClick={() => setLogeOpen(false)}>
+              <span className="loge-item__icon"><IconCar /></span>
+              <span>Nos voitures</span>
+            </Link>
+            <a href="/#offers" className="loge-item" onClick={() => setLogeOpen(false)}>
+              <span className="loge-item__icon"><IconTag /></span>
+              <span>Forfaits</span>
+            </a>
+            <Link to="/reservations" className="loge-item" onClick={() => setLogeOpen(false)}>
+              <span className="loge-item__icon"><IconBooking /></span>
+              <span>Mes réservations</span>
+            </Link>
+          </div>
+        </li>
       </ul>
 
       <div className="navbar-right">
@@ -116,9 +173,10 @@ export default function Navbar() {
 
       {menuOpen && !searchOpen && (
         <div className="mobile-menu">
+          <Link to="/" onClick={() => setMenuOpen(false)}>Accueil</Link>
           <Link to="/cars" onClick={() => setMenuOpen(false)}>Nos voitures</Link>
-          <a href="/#terms" onClick={() => setMenuOpen(false)}>Conditions</a>
-          <a href="/#news" onClick={() => setMenuOpen(false)}>Actualités</a>
+          <a href="/#offers" onClick={() => setMenuOpen(false)}>Forfaits</a>
+          <Link to="/reservations" onClick={() => setMenuOpen(false)}>Mes réservations</Link>
           <Link to="/cars" onClick={() => setMenuOpen(false)} style={{ color: 'var(--racing-red)', fontWeight: 600 }}>Réserver →</Link>
         </div>
       )}
