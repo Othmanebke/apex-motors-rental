@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react'
 import { OPTIONS } from '../data/cars'
 import { differenceInDays, addMonths, startOfMonth, getDay, getDaysInMonth, format, isBefore, isToday } from 'date-fns'
+import { fr } from 'date-fns/locale'
 
 /* ─── Mini Calendar ─── */
 function Calendar({ startDate, endDate, onSelect }) {
@@ -44,7 +45,7 @@ function Calendar({ startDate, endDate, onSelect }) {
     <div>
       <div className="cal-header">
         <button className="cal-nav" onClick={() => setViewDate(addMonths(viewDate, -1))}>‹</button>
-        <span className="cal-month">{format(viewDate, 'MMMM yyyy')}</span>
+        <span className="cal-month">{format(viewDate, 'MMMM yyyy', { locale: fr })}</span>
         <button className="cal-nav" onClick={() => setViewDate(addMonths(viewDate, 1))}>›</button>
       </div>
       <div className="cal-grid">
