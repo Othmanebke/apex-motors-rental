@@ -1,31 +1,92 @@
-import { useState, useEffect } from 'react'
-import { useSearchParams } from 'react-router-dom'
-import { cars, FILTERS } from '../data/cars'
+import { useState, useEffect, useRef } from 'react'
+import { useSearchParams, Link } from 'react-router-dom'
+import { cars, FILTERS, SORT_OPTIONS } from '../data/cars'
 import ReservationModal from '../components/ReservationModal'
 
-const CARS_PER_PAGE = 6
+const CARS_PER_PAGE = 9
+
+// ── Coup de cœur helpers ──────────────────────────────────────────────────────
+function getWishlist() {
+  try { return JSON.parse(localStorage.getItem('apexWishlist') || '[]') } catch { return [] }
+}
+function saveWishlist(arr) {
+  localStorage.setItem('apexWishlist', JSON.stringify(arr))
+}
+
+// ── Heart button ──────────────────────────────────────────────────────────────
+function HeartBtn({ carId, wishlist, onToggle }) {
+  const active = wishlist.includes(carId)
+  return (
+    <button
+      className={`heart-btn ${active ? 'active' : ''}`}
+      onClick={(e) => { e.stopPropagation(); e.preventDefault(); onToggle(carId) }}
+      aria-label={active ? 'Retirer des coups de cœur' : 'Ajouter aux coups de cœur'}
+      title={active ? 'Coup de cœur !' : 'Coup de cœur'}
+    >
+      <svg width="16" height="16" viewBox="0 0 24 24" fill={active ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z" />
+      </svg>
+    </button>
+  )
+}
+
+// ── Animated counter ──────────────────────────────────────────────────────────
+function AnimCounter({ target, suffix = '' }) {
+  const [val, setVal] = useState(0)
+  const ref = useRef(null)
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => {
+      if (!e.isIntersecting) return
+      obs.disconnect()
+      let start = 0
+      const step = Math.ceil(target / 40)
+      const timer = setInterval(() => {
+        start = Math.min(start + step, target)
+        setVal(start)
+        if (start >= target) clearInterval(timer)
+      }, 30)
+    }, { threshold: 0.3 })
+    if (ref.current) obs.observe(ref.current)
+    return () => obs.disconnect()
+  }, [target])
+  return <span ref={ref}>{val}{suffix}</span>
+}
+
+// ── Segment badge color ───────────────────────────────────────────────────────
+const segCls = { Luxe: 'badge--gold', Premium: 'badge--silver', Généraliste: 'badge--green' }
 
 export default function CarsPage() {
   const [searchParams, setSearchParams] = useSearchParams()
-  const [activeFilters, setActiveFilters] = useState({ make: 'All Makes', type: 'All Types', provider: 'All Providers' })
+  const [activeFilters, setActiveFilters] = useState({
+    make: 'Toutes marques',
+    segment: 'Tous segments',
+    category: 'Toutes catégories',
+  })
+  const [sort, setSort] = useState('price-asc')
   const [page, setPage] = useState(1)
   const [selectedCar, setSelectedCar] = useState(null)
+  const [wishlist, setWishlist] = useState(getWishlist)
+  const [favOnly, setFavOnly] = useState(false)
+  const heroRef = useRef(null)
+  const [heroVisible, setHeroVisible] = useState(false)
 
   const searchQ = searchParams.get('q') || ''
 
-  // Reset page when search or filters change
-  useEffect(() => { setPage(1) }, [searchQ, activeFilters])
+  useEffect(() => { setPage(1) }, [searchQ, activeFilters, sort, favOnly])
 
-  const filtered = cars.filter((car) => {
-    const makeOk = activeFilters.make === 'All Makes' || car.type === activeFilters.make
-    const typeOk = activeFilters.type === 'All Types' || car.category === activeFilters.type
-    const searchOk = !searchQ || [car.name, car.brand, car.category, ...car.tags]
-      .join(' ').toLowerCase().includes(searchQ.toLowerCase())
-    return makeOk && typeOk && searchOk
-  })
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { setHeroVisible(true); obs.disconnect() }
+    }, { threshold: 0.05 })
+    if (heroRef.current) obs.observe(heroRef.current)
+    return () => obs.disconnect()
+  }, [])
 
-  const paginated = filtered.slice(0, page * CARS_PER_PAGE)
-  const hasMore = paginated.length < filtered.length
+  const toggleFav = (id) => {
+    const next = wishlist.includes(id) ? wishlist.filter(x => x !== id) : [...wishlist, id]
+    setWishlist(next)
+    saveWishlist(next)
+  }
 
   const clearSearch = () => {
     const next = new URLSearchParams(searchParams)
@@ -33,89 +94,204 @@ export default function CarsPage() {
     setSearchParams(next)
   }
 
+  const resetFilters = () => {
+    setActiveFilters({ make: 'Toutes marques', segment: 'Tous segments', category: 'Toutes catégories' })
+    setFavOnly(false)
+    clearSearch()
+  }
+
+  const isFiltered = favOnly || searchQ ||
+    activeFilters.make !== 'Toutes marques' ||
+    activeFilters.segment !== 'Tous segments' ||
+    activeFilters.category !== 'Toutes catégories'
+
+  // Filter
+  let filtered = cars.filter((car) => {
+    const makeOk   = activeFilters.make === 'Toutes marques' || car.type === activeFilters.make
+    const segOk    = activeFilters.segment === 'Tous segments' || car.segment === activeFilters.segment
+    const catOk    = activeFilters.category === 'Toutes catégories' || car.category === activeFilters.category
+    const favOk    = !favOnly || wishlist.includes(car.id)
+    const searchOk = !searchQ || [car.name, car.brand, car.category, car.segment, ...car.tags]
+      .join(' ').toLowerCase().includes(searchQ.toLowerCase())
+    return makeOk && segOk && catOk && favOk && searchOk
+  })
+
+  // Sort
+  filtered = [...filtered].sort((a, b) => {
+    if (sort === 'price-asc')   return a.priceDay - b.priceDay
+    if (sort === 'price-desc')  return b.priceDay - a.priceDay
+    if (sort === 'power-desc') {
+      const pw = c => parseInt(c.specs.power)
+      return pw(b) - pw(a)
+    }
+    return 0
+  })
+
+  const totalPages = Math.ceil(filtered.length / CARS_PER_PAGE)
+  const paginated = filtered.slice((page - 1) * CARS_PER_PAGE, page * CARS_PER_PAGE)
+
   return (
     <div className="cars-page">
-      <div className="cars-page-hero">
-        <h1>Nos Voitures</h1>
-        {searchQ && (
-          <p style={{ fontSize: '0.88rem', color: 'var(--gray)', marginTop: '0.5rem' }}>
-            Résultats pour <strong style={{ color: 'var(--white)' }}>« {searchQ} »</strong>
-            <button onClick={clearSearch} style={{ marginLeft: '0.75rem', background: 'none', border: 'none', color: 'var(--racing-red)', cursor: 'pointer', fontSize: '0.8rem' }}>✕ Effacer</button>
-          </p>
-        )}
-      </div>
 
-      {/* Filter bar */}
+      {/* ── ANIMATED HERO ─────────────────────────────────────────── */}
+      <section ref={heroRef} className={`cars-hero ${heroVisible ? 'cars-hero--visible' : ''}`}>
+        <div className="cars-hero__bg">
+          <div className="cars-hero__orb cars-hero__orb--1" />
+          <div className="cars-hero__orb cars-hero__orb--2" />
+          <div className="cars-hero__line" />
+        </div>
+        <div className="cars-hero__content">
+          <div className="cars-hero__eyebrow">Catalogue complet</div>
+          <h1 className="cars-hero__title">
+            {searchQ
+              ? <><span>Résultats pour </span><em className="hero-q">« {searchQ} »</em></>
+              : <><span>Notre flotte</span><br /><em>d'exception</em></>
+            }
+          </h1>
+          <p className="cars-hero__sub">
+            De la citadine économique à la supercar exclusive — trouvez le véhicule идеal pour chaque occasion.
+          </p>
+          {searchQ && (
+            <button className="cars-hero__clear" onClick={clearSearch}>✕ Effacer la recherche</button>
+          )}
+          <div className="cars-hero__stats">
+            <div className="hero-stat">
+              <strong><AnimCounter target={14} /></strong>
+              <span>Véhicules</span>
+            </div>
+            <div className="hero-stat">
+              <strong><AnimCounter target={8} /></strong>
+              <span>Marques</span>
+            </div>
+            <div className="hero-stat">
+              <strong><AnimCounter target={48} suffix="€" /></strong>
+              <span>Dès / jour</span>
+            </div>
+            <div className="hero-stat">
+              <strong><AnimCounter target={100} suffix="%" /></strong>
+              <span>Satisfaits</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── FILTER BAR ──────────────────────────────────────────────── */}
       <div className="filter-bar-cars">
-        {Object.entries(FILTERS).map(([key, options]) => (
-          <div key={key} style={{ position: 'relative', display: 'inline-block' }}>
+        <div className="filter-bar-cars__left">
+          {Object.entries(FILTERS).map(([key, options]) => (
             <select
+              key={key}
               className="filter-dropdown"
               value={activeFilters[key]}
-              onChange={(e) => { setActiveFilters(prev => ({ ...prev, [key]: e.target.value })) }}
-              style={{ appearance: 'none', paddingRight: '1.5rem', cursor: 'pointer' }}
+              onChange={(e) => setActiveFilters(prev => ({ ...prev, [key]: e.target.value }))}
             >
               {options.map(opt => <option key={opt}>{opt}</option>)}
             </select>
-            <span style={{ position: 'absolute', right: '0.7rem', top: '50%', transform: 'translateY(-50%)', fontSize: '0.6rem', pointerEvents: 'none', color: activeFilters[key] !== options[0] ? '#000' : 'var(--gray)' }}>▾</span>
-          </div>
-        ))}
-        {(Object.values(activeFilters).some(v => !v.startsWith('All')) || searchQ) && (
+          ))}
+
           <button
-            className="filter-dropdown"
-            style={{ color: 'var(--gray)', borderColor: 'rgba(255,255,255,0.05)' }}
-            onClick={() => { setActiveFilters({ make: 'All Makes', type: 'All Types', provider: 'All Providers' }); clearSearch() }}
+            className={`fav-filter-btn ${favOnly ? 'active' : ''}`}
+            onClick={() => setFavOnly(v => !v)}
+            title="Afficher mes coups de cœur uniquement"
           >
-            ✕ Réinitialiser
+            <svg width="14" height="14" viewBox="0 0 24 24" fill={favOnly ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+            Coups de cœur
+            {wishlist.length > 0 && <span className="fav-count">{wishlist.length}</span>}
           </button>
-        )}
+
+          {isFiltered && (
+            <button className="filter-dropdown filter-reset" onClick={resetFilters}>✕ Réinitialiser</button>
+          )}
+        </div>
+
+        <div className="filter-bar-cars__right">
+          <select className="filter-dropdown" value={sort} onChange={(e) => setSort(e.target.value)}>
+            {SORT_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+          </select>
+          <span className="filter-count">{filtered.length} résultat{filtered.length !== 1 ? 's' : ''}</span>
+        </div>
       </div>
 
-      {/* Car grid */}
-      <div className="cars-listing">
-        {filtered.length === 0 ? (
-          <div style={{ gridColumn: '1/-1', textAlign: 'center', padding: '4rem 0', color: 'var(--gray)' }}>
-            Aucun véhicule ne correspond à votre recherche.
-          </div>
-        ) : (
-          paginated.map((car) => (
-            <div key={car.id} className="car-listing-card" onClick={() => setSelectedCar(car)}>
-              <div className="car-listing-img">
+      {/* ── GRID ──────────────────────────────────────────────────────── */}
+      {paginated.length === 0 ? (
+        <div className="cars-empty">
+          <p>Aucun véhicule ne correspond à votre recherche.</p>
+          <button className="btn-red" onClick={resetFilters}>Voir tous les véhicules</button>
+        </div>
+      ) : (
+        <div className="cars-listing">
+          {paginated.map((car) => (
+            <article key={car.id} className="car-card">
+              <Link to={`/cars/${car.id}`} className="car-card__img-wrap">
                 <img src={car.image} alt={car.name} loading="lazy" />
-                <div className="car-listing-tags">
-                  {car.tags.map(t => <span key={t} className="tag">{t}</span>)}
+                <div className="car-card__tags">
+                  {car.tags.map(t => <span key={t} className="car-tag">{t}</span>)}
                 </div>
-              </div>
-              <div className="car-listing-body">
-                <div>
-                  <div className="car-listing-name">{car.name}</div>
-                  <div className="car-listing-offer">Voir l'offre &rsaquo;</div>
-                </div>
-                <div className="car-listing-price">
-                  <div className="from">À partir de</div>
-                  <div className="price">{car.priceDay.toLocaleString('fr-FR')} €/jour</div>
-                </div>
-              </div>
-            </div>
-          ))
-        )}
-      </div>
+                <span className={`car-card__segment-badge ${segCls[car.segment] || ''}`}>
+                  {car.segment}
+                </span>
+                <HeartBtn carId={car.id} wishlist={wishlist} onToggle={toggleFav} />
+              </Link>
 
-      {/* Pagination */}
-      <div className="pagination">
-        {Array.from({ length: Math.ceil(filtered.length / CARS_PER_PAGE) }, (_, i) => (
-          <button
-            key={i}
-            className={`page-btn${page === i + 1 ? ' active' : ''}`}
-            onClick={() => setPage(i + 1)}
-          >
-            {i + 1}
-          </button>
-        ))}
-        {hasMore && (
-          <button className="page-btn" onClick={() => setPage(p => p + 1)}>›</button>
-        )}
-      </div>
+              <div className="car-card__body">
+                <div className="car-card__meta">
+                  <span className="car-card__category">{car.category}</span>
+                  <span className="car-card__brand">{car.brand}</span>
+                </div>
+                <h3 className="car-card__name">{car.name}</h3>
+
+                <div className="car-card__specs">
+                  <div className="car-spec">
+                    <span className="car-spec__val">{car.specs.power}</span>
+                    <span className="car-spec__lbl">Puissance</span>
+                  </div>
+                  <div className="car-spec">
+                    <span className="car-spec__val">{car.specs.acceleration}</span>
+                    <span className="car-spec__lbl">0–100</span>
+                  </div>
+                  <div className="car-spec">
+                    <span className="car-spec__val">{car.specs.topSpeed}</span>
+                    <span className="car-spec__lbl">Vmax</span>
+                  </div>
+                  <div className="car-spec">
+                    <span className="car-spec__val">{car.specs.seats}</span>
+                    <span className="car-spec__lbl">Places</span>
+                  </div>
+                </div>
+
+                <div className="car-card__footer">
+                  <div className="car-card__price">
+                    <span className="car-card__price-from">À partir de</span>
+                    <span className="car-card__price-amount">{car.priceDay}€</span>
+                    <span className="car-card__price-unit">/jour</span>
+                  </div>
+                  <div className="car-card__actions">
+                    <Link to={`/cars/${car.id}`} className="car-card__detail-btn">Détails</Link>
+                    <button className="btn-red car-card__reserve-btn" onClick={() => setSelectedCar(car)}>
+                      Réserver
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      )}
+
+      {/* ── PAGINATION ──────────────────────────────────────────────── */}
+      {totalPages > 1 && (
+        <div className="pagination">
+          <button className="page-btn" disabled={page === 1} onClick={() => setPage(p => p - 1)}>‹</button>
+          {Array.from({ length: totalPages }, (_, i) => (
+            <button key={i} className={`page-btn${page === i + 1 ? ' active' : ''}`} onClick={() => setPage(i + 1)}>
+              {i + 1}
+            </button>
+          ))}
+          <button className="page-btn" disabled={page === totalPages} onClick={() => setPage(p => p + 1)}>›</button>
+        </div>
+      )}
 
       {selectedCar && (
         <ReservationModal car={selectedCar} onClose={() => setSelectedCar(null)} />
