@@ -74,8 +74,8 @@ export const FILTERS = {
 }
 
 export const OPTIONS = [
-  { id: 'insurance', label: 'Full Insurance', priceDay: 80 },
-  { id: 'driver', label: 'Private Driver', priceDay: 250 },
-  { id: 'delivery', label: 'Home Delivery', priceDay: 50 },
-  { id: 'gps', label: 'GPS & WiFi', priceDay: 20 },
+  { id: 'insurance', label: 'Assurance tous risques', priceDay: 80 },
+  { id: 'driver', label: 'Chauffeur privé', priceDay: 250 },
+  { id: 'delivery', label: 'Livraison à domicile', priceDay: 50 },
+  { id: 'gps', label: 'GPS & Wi-Fi embarqué', priceDay: 20 },
 ]

@@ -9,59 +9,61 @@ export default function Footer() {
       <div className="footer-grid">
         <div className="footer-brand">
           <div className="footer-brand-name">Luxury</div>
-          <p>Premium car rental in Los Angeles. Mercedes-AMG, Porsche, Ferrari, Lamborghini and more, delivered to your door.</p>
+          <p>Location de voitures premium en France. Mercedes-AMG, Porsche, Ferrari, Lamborghini et bien d’autres, livrés chez vous.</p>
           <div className="footer-addr">
-            8900 Sunset Blvd, Suite 210<br />
-            Los Angeles, CA 90069, USA<br />
+            12 avenue des Champs-Élysées<br />
+            75008 Paris, France<br />
             <br />
-            +1 (323) 555-7952<br />
-            info@luxury.com
+            +33 1 42 00 00 00<br />
+            contact@luxury-cars.fr
           </div>
         </div>
 
         <div className="footer-col">
           <h4>Services</h4>
-          <Link to="/cars">Cars</Link>
-          <a href="#">Rental Terms</a>
-          <a href="#">How to Rent</a>
-          <a href="#">Testimonials</a>
-          <a href="#">News</a>
+          <Link to="/cars">Nos voitures</Link>
+          <a href="#terms">Conditions de location</a>
+          <a href="#steps">Comment ça marche ?</a>
+          <a href="#testimonials">Témoignages</a>
+          <a href="#news">Actualités</a>
         </div>
 
         <div className="footer-col">
-          <h4>Help</h4>
-          <a href="#">Rent a Car</a>
-          <a href="#">Return Info</a>
-          <a href="#">Driver's Help</a>
+          <h4>Aide</h4>
+          <a href="#">Louer une voiture</a>
+          <a href="#">Retour du véhicule</a>
+          <a href="#">Aide conducteur</a>
+          <a href="#">FAQ</a>
+          <a href="#">Contact</a>
         </div>
 
         <div className="footer-newsletter">
-          <h4>Stay up to date with latest news &amp; special offers</h4>
-          <p>Subscribe to our newsletter. No spam, ever.</p>
+          <h4>Restez informés de nos offres et actualités</h4>
+          <p>Inscrivez-vous à notre newsletter. Sans spam, promis.</p>
           <div className="newsletter-form">
             <input
               type="email"
               className="newsletter-input"
-              placeholder="Your email"
+              placeholder="Votre e-mail"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
             <button
               className="pill-btn white"
               style={{ padding: '0.6rem 1rem', fontSize: '0.78rem', flexShrink: 0 }}
-              onClick={() => { if (email) { alert('Subscribed!'); setEmail('') } }}
+              onClick={() => { if (email) { alert('Inscription réussie !'); setEmail('') } }}
             >
-              Join
+              S’inscrire
             </button>
           </div>
         </div>
       </div>
 
       <div className="footer-bottom">
-        <span>© {new Date().getFullYear()} Luxury. All rights reserved.</span>
+        <span>© {new Date().getFullYear()} Luxury. Tous droits réservés.</span>
         <div style={{ display: 'flex', gap: '1.5rem' }}>
-          <a href="#" style={{ color: 'inherit' }}>Privacy Policy</a>
-          <a href="#" style={{ color: 'inherit' }}>Terms of Service</a>
+          <a href="#" style={{ color: 'inherit' }}>Politique de confidentialité</a>
+          <a href="#" style={{ color: 'inherit' }}>Conditions générales</a>
         </div>
       </div>
     </footer>

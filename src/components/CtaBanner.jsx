@@ -10,15 +10,15 @@ export default function CtaBanner() {
         />
       </div>
       <div className="cta-content">
-        <div className="cta-icon">🚀</div>
+        <div className="cta-icon">�</div>
         <h2 className="cta-title">
-          Book your premium car<br />
-          and have it delivered<br />
-          in 90 minutes
+          Réservez votre voiture<br />
+          et profitez de la route<br />
+          dès demain
         </h2>
         <Link to="/cars">
           <button className="pill-btn white" style={{ fontSize: '0.9rem' }}>
-            Reserve Now →
+            Réserver maintenant →
           </button>
         </Link>
       </div>

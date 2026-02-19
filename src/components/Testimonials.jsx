@@ -4,25 +4,25 @@ const TESTIMONIALS = [
   {
     id: 1,
     stars: 5,
-    text: 'Absolutely phenomenal experience. The Lamborghini Huracán was delivered right to my hotel, spotlessly clean and fueled up. Will definitely rent again for my next LA trip.',
-    name: 'James Whitfield',
-    title: 'CEO, Whitfield Capital',
+    text: 'Service impeccable du début à la fin. La Lamborghini a été livrée propre et avec le plein. Je recommande à 100\u00a0% pour toute occasion spéciale.',
+    name: 'Thomas Marchand',
+    title: 'Chef d\'entreprise',
     emoji: '👨‍💼',
   },
   {
     id: 2,
     stars: 5,
-    text: 'I rented the Porsche 911 GT3 for a weekend track day. The car was in immaculate condition and the team handled everything perfectly. Premium service at every step.',
-    name: 'Sarah Chen',
-    title: 'Architect & Car Enthusiast',
+    text: 'J’ai loué une Porsche 911 pour un week-end. Véhicule en parfait état, équipe très professionnelle. Réservation en ligne super fluide. Je reviendrai !',
+    name: 'Camille Fontaine',
+    title: 'Architecte & passionnée auto',
     emoji: '👩‍💻',
   },
   {
     id: 3,
     stars: 5,
-    text: 'Best luxury car rental in Los Angeles, no question. The McLaren 720S was absolutely thrilling. The booking process was seamless and the staff incredibly professional.',
-    name: 'Marcus Deleon',
-    title: 'Film Producer',
+    text: 'La meilleure agence de location de voitures de luxe que j’ai essayée. Transparence totale sur les tarifs, zéro mauvaise surprise. La McLaren était sensationnelle.',
+    name: 'Karim El Amrani',
+    title: 'Réalisateur',
     emoji: '🎬',
   },
 ]
@@ -33,15 +33,15 @@ export default function Testimonials() {
   return (
     <section className="section-testimonials">
       <div className="testimonials-header">
-        <p className="section-label">What Clients Say</p>
-        <h2 className="section-title">Real Testimonials,<br />Ride with confidence</h2>
+        <p className="section-label">Ce que disent nos clients</p>
+          <h2 className="section-title">Avis réels,<br />roulez en confiance</h2>
       </div>
 
       <div className="testimonials-grid">
         {TESTIMONIALS.map((t) => (
           <div key={t.id} className="testimonial-card">
             <div className="stars">{'★'.repeat(t.stars)}</div>
-            <p className="testimonial-text">"{t.text}"</p>
+            <p className="testimonial-text">« {t.text} »</p>
             <div className="testimonial-author">
               <div className="author-avatar">{t.emoji}</div>
               <div>

@@ -1,25 +1,25 @@
 export default function RentalTerms() {
   const terms = [
-    { label: 'Minimum Age', value: '25 years' },
-    { label: 'License', value: 'Valid since 3+ yrs' },
-    { label: 'Deposit', value: '$2,000' },
-    { label: 'Fuel Policy', value: 'Full-to-Full' },
-    { label: 'Mileage', value: '300 mi/day' },
-    { label: 'Insurance', value: 'Full coverage' },
+    { label: 'Âge minimum', value: '21 ans' },
+    { label: 'Permis de conduire', value: 'Valide depuis 2 ans min.' },
+    { label: 'Caution', value: 'Dès 300 € selon véhicule' },
+    { label: 'Carburant', value: 'Plein → Plein' },
+    { label: 'Kilométrage', value: 'Illimité ou forfait selon offre' },
+    { label: 'Assurance', value: 'RC incluse, options dispo' },
   ]
 
   return (
     <section className="section-terms" id="terms">
       <div className="terms-grid">
         <div className="terms-left">
-          <p className="section-label">Before You Go</p>
-          <h2 className="terms-title">Rental Terms</h2>
+          <p className="section-label">Avant de partir</p>
+          <h2 className="terms-title">Conditions de location</h2>
           <p>
-            We want your experience to be seamless from start to finish.
-            Please review our rental conditions carefully before booking your vehicle.
-            Our team is available 24/7 to answer any questions.
+            Nous voulons que votre expérience soit simple de bout en bout.
+            Consultez nos conditions avant de réserver.
+            Notre équipe est disponible 7j/7 pour répondre à vos questions.
           </p>
-          <button className="pill-btn outline">Read Full Terms →</button>
+          <button className="pill-btn outline">Lire les conditions complètes →</button>
         </div>
 
         <div className="terms-card">
@@ -31,8 +31,8 @@ export default function RentalTerms() {
               👤
             </div>
             <div>
-              <div className="driver-name">Standard Driver Profile</div>
-              <div className="driver-role">Requirements overview</div>
+              <div className="driver-name">Profil conducteur standard</div>
+              <div className="driver-role">Récapitulatif des exigences</div>
             </div>
           </div>
           <div className="terms-items">

@@ -6,7 +6,7 @@ import { differenceInDays, addMonths, startOfMonth, getDay, getDaysInMonth, form
 function Calendar({ startDate, endDate, onSelect }) {
   const today = new Date()
   const [viewDate, setViewDate] = useState(new Date(today.getFullYear(), today.getMonth(), 1))
-  const days = ['Mo','Tu','We','Th','Fr','Sa','Su']
+  const days = ['Lu','Ma','Me','Je','Ve','Sa','Di']
 
   const monthStart = startOfMonth(viewDate)
   const firstDay = (getDay(monthStart) + 6) % 7 // Monday-based
@@ -94,7 +94,7 @@ export default function ReservationModal({ car, onClose }) {
   }
 
   const handleConfirm = () => {
-    alert(`✅ Reservation Confirmed!\n\n${car.name}\n${format(startDate, 'MMM d')} → ${format(endDate, 'MMM d, yyyy')}\n${days} day${days > 1 ? 's' : ''}\n\nTotal: $${total.toLocaleString()}\n\nOur team will contact you within 30 minutes.`)
+    alert(`✅ Réservation confirmée !\n\n${car.name}\n${format(startDate, 'dd/MM/yyyy')} → ${format(endDate, 'dd/MM/yyyy')}\n${days} jour${days > 1 ? 's' : ''}\n\nTotal : ${total.toLocaleString('fr-FR')} €\n\nNotre équipe vous contactera dans les 30 minutes.`)
     onClose()
   }
 
@@ -103,9 +103,9 @@ export default function ReservationModal({ car, onClose }) {
       <div className="modal">
         <div className="modal-header">
           <span className="modal-title">
-            {step === 1 && '📅 Select Dates'}
-            {step === 2 && '⚙️ Add Options'}
-            {step === 3 && '✅ Confirm Booking'}
+            {step === 1 && '📅 Sélectionner les dates'}
+            {step === 2 && '⧗ Options supplémentaires'}
+            {step === 3 && '✅ Confirmer la réservation'}
           </span>
           <button className="modal-close" onClick={onClose}>✕</button>
         </div>
@@ -117,7 +117,7 @@ export default function ReservationModal({ car, onClose }) {
             <div className="modal-car-name">{car.name}</div>
             <div className="modal-car-brand">{car.brand}</div>
             <div style={{ fontSize: '0.78rem', color: 'var(--gray)', marginTop: '0.2rem' }}>
-              ${car.priceDay.toLocaleString()}/day
+              {car.priceDay.toLocaleString('fr-FR')} €/jour
             </div>
           </div>
         </div>
@@ -126,27 +126,27 @@ export default function ReservationModal({ car, onClose }) {
         {step === 1 && (
           <div className="calendar-section">
             <p className="input-label" style={{ marginBottom: '0.75rem' }}>
-              {!startDate ? 'Select pickup date' : pickingEnd ? 'Select return date' : 'Dates selected ✓'}
+              {!startDate ? 'Sélectionnez la date de début' : pickingEnd ? 'Sélectionnez la date de fin' : 'Dates sélectionnées ✓'}
             </p>
             <div className="date-inputs">
               <div>
-                <p className="input-label">Pickup</p>
+                <p className="input-label">Début</p>
                 <div className="date-input" style={{ cursor: 'default', color: startDate ? 'var(--white)' : 'var(--gray2)' }}>
-                  {startDate ? format(startDate, 'MMM d, yyyy') : 'Select date'}
+                  {startDate ? format(startDate, 'dd/MM/yyyy') : 'Choisir date'}
                 </div>
               </div>
               <div>
-                <p className="input-label">Return</p>
+                <p className="input-label">Retour</p>
                 <div className="date-input" style={{ cursor: 'default', color: endDate ? 'var(--white)' : 'var(--gray2)' }}>
-                  {endDate ? format(endDate, 'MMM d, yyyy') : 'Select date'}
+                  {endDate ? format(endDate, 'dd/MM/yyyy') : 'Choisir date'}
                 </div>
               </div>
             </div>
             <Calendar startDate={startDate} endDate={endDate} onSelect={handleDateSelect} />
             {days > 0 && (
               <div style={{ marginTop: '1rem', padding: '0.85rem 1rem', background: 'var(--card)', borderRadius: 10, border: '1px solid var(--border)', fontSize: '0.85rem', display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: 'var(--gray)' }}>{days} day{days > 1 ? 's' : ''} selected</span>
-                <span style={{ fontWeight: 700 }}>${basePrice.toLocaleString()}</span>
+                <span style={{ color: 'var(--gray)' }}>{days} jour{days > 1 ? 's' : ''} sélectionné{days > 1 ? 's' : ''}</span>
+                <span style={{ fontWeight: 700 }}>{basePrice.toLocaleString('fr-FR')} €</span>
               </div>
             )}
             <button
@@ -155,7 +155,7 @@ export default function ReservationModal({ car, onClose }) {
               disabled={!startDate || !endDate}
               onClick={() => setStep(2)}
             >
-              Continue →
+              Continuer →
             </button>
           </div>
         )}
@@ -163,7 +163,7 @@ export default function ReservationModal({ car, onClose }) {
         {/* ─── STEP 2: Options ─── */}
         {step === 2 && (
           <div>
-            <p className="input-label" style={{ marginBottom: '1rem' }}>Add extras to your rental</p>
+            <p className="input-label" style={{ marginBottom: '1rem' }}>Personnalisez votre location avec des options</p>
             <div className="options-grid">
               {OPTIONS.map((opt) => (
                 <div
@@ -173,7 +173,7 @@ export default function ReservationModal({ car, onClose }) {
                 >
                   <div className="option-check">{selectedOptions.includes(opt.id) ? '✓' : ''}</div>
                   <div className="option-label">{opt.label}</div>
-                  <div className="option-price">+${opt.priceDay}/day</div>
+                  <div className="option-price">+{opt.priceDay} €/jour</div>
                 </div>
               ))}
             </div>
@@ -181,33 +181,33 @@ export default function ReservationModal({ car, onClose }) {
             <div className="price-summary">
               <div className="price-row">
                 <span className="pl">{car.name}</span>
-                <span className="pv">${car.priceDay.toLocaleString()} × {days}d</span>
+                <span className="pv">{car.priceDay.toLocaleString('fr-FR')} € × {days}j</span>
               </div>
               <div className="price-row">
-                <span className="pl">Base rental</span>
-                <span className="pv">${basePrice.toLocaleString()}</span>
+                <span className="pl">Location de base</span>
+                <span className="pv">{basePrice.toLocaleString('fr-FR')} €</span>
               </div>
               {selectedOptions.map(id => {
                 const opt = OPTIONS.find(o => o.id === id)
                 return (
                   <div className="price-row" key={id}>
                     <span className="pl">{opt.label}</span>
-                    <span className="pv">+${(opt.priceDay * days).toLocaleString()}</span>
+                    <span className="pv">+{(opt.priceDay * days).toLocaleString('fr-FR')} €</span>
                   </div>
                 )
               })}
               <div className="price-row total">
                 <span className="pl">Total</span>
-                <span className="pv">${total.toLocaleString()}</span>
+                <span className="pv">{total.toLocaleString('fr-FR')} €</span>
               </div>
             </div>
 
             <div style={{ display: 'flex', gap: '0.75rem' }}>
               <button className="pill-btn dark" style={{ flex: 1, justifyContent: 'center', padding: '1rem', borderRadius: 10 }} onClick={() => setStep(1)}>
-                ← Back
+                ← Retour
               </button>
               <button className="pill-btn white" style={{ flex: 2, justifyContent: 'center', padding: '1rem', borderRadius: 10, fontSize: '0.9rem' }} onClick={() => setStep(3)}>
-                Review Booking →
+                Récapitulatif →
               </button>
             </div>
           </div>
@@ -217,40 +217,40 @@ export default function ReservationModal({ car, onClose }) {
         {step === 3 && (
           <div>
             <div className="price-summary">
-              <div className="price-row"><span className="pl">Vehicle</span><span className="pv">{car.name}</span></div>
+              <div className="price-row"><span className="pl">Véhicule</span><span className="pv">{car.name}</span></div>
               <div className="price-row">
-                <span className="pl">Pickup</span>
-                <span className="pv">{startDate && format(startDate, 'MMM d, yyyy')}</span>
+                <span className="pl">Début</span>
+                <span className="pv">{startDate && format(startDate, 'dd/MM/yyyy')}</span>
               </div>
               <div className="price-row">
-                <span className="pl">Return</span>
-                <span className="pv">{endDate && format(endDate, 'MMM d, yyyy')}</span>
+                <span className="pl">Retour</span>
+                <span className="pv">{endDate && format(endDate, 'dd/MM/yyyy')}</span>
               </div>
               <div className="price-row">
-                <span className="pl">Duration</span>
-                <span className="pv">{days} day{days > 1 ? 's' : ''}</span>
+                <span className="pl">Durée</span>
+                <span className="pv">{days} jour{days > 1 ? 's' : ''}</span>
               </div>
-              <div className="price-row"><span className="pl">Base price</span><span className="pv">${basePrice.toLocaleString()}</span></div>
+              <div className="price-row"><span className="pl">Location de base</span><span className="pv">{basePrice.toLocaleString('fr-FR')} €</span></div>
               {selectedOptions.map(id => {
                 const opt = OPTIONS.find(o => o.id === id)
-                return <div className="price-row" key={id}><span className="pl">{opt.label}</span><span className="pv">+${(opt.priceDay * days).toLocaleString()}</span></div>
+                return <div className="price-row" key={id}><span className="pl">{opt.label}</span><span className="pv">+{(opt.priceDay * days).toLocaleString('fr-FR')} €</span></div>
               })}
               <div className="price-row total">
-                <span className="pl">Total Due</span>
-                <span className="pv">${total.toLocaleString()}</span>
+                <span className="pl">Total à régler</span>
+                <span className="pv">{total.toLocaleString('fr-FR')} €</span>
               </div>
             </div>
 
             <div style={{ display: 'flex', gap: '0.75rem' }}>
               <button className="pill-btn dark" style={{ flex: 1, justifyContent: 'center', padding: '1rem', borderRadius: 10 }} onClick={() => setStep(2)}>
-                ← Back
+                ← Retour
               </button>
               <button
                 className="pill-btn white"
                 style={{ flex: 2, justifyContent: 'center', padding: '1rem', borderRadius: 10, fontSize: '0.9rem' }}
                 onClick={handleConfirm}
               >
-                Confirm & Book 🚀
+                Confirmer la réservation 🚗
               </button>
             </div>
           </div>

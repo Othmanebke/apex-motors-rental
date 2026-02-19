@@ -1,23 +1,23 @@
 const STEPS = [
   {
     num: '01',
-    title: 'Choose Your Vehicle',
-    desc: 'Browse our fleet of premium sports cars and supercars. Filter by brand, type, or budget to find your perfect match.',
+    title: 'Choisissez votre véhicule',
+    desc: 'Parcourez notre flotte : citadines, SUV, berlines ou supercars. Filtrez par catégorie, budget ou disponibilité et trouvez le véhicule qui vous correspond.',
   },
   {
     num: '02',
-    title: 'Pick Your Dates',
-    desc: 'Select your rental period using our real-time calendar. Check availability and get an instant price calculation.',
+    title: 'Vérifiez vos documents',
+    desc: 'Munissez-vous de votre permis de conduire valide, d’une pièce d’identité et d’une carte bancaire pour le prélèvement de la caution. Simple et rapide.',
   },
   {
     num: '03',
-    title: 'Confirm & Pay',
-    desc: 'Secure your booking with a simple online payment. We accept all major cards and digital wallets.',
+    title: 'Confirmez et payez',
+    desc: 'Sélectionnez vos dates, vos options (assurance, conducteur supplémentaire, GPS…) et réglez en ligne en toute sécurité. Confirmation instantanée.',
   },
   {
     num: '04',
-    title: 'Get It Delivered',
-    desc: 'Your car arrives at your door within 90 minutes, fully fueled and ready to drive. Enjoy the ride.',
+    title: 'Récupérez ou faites livrer',
+    desc: 'Retirez votre véhicule en agence ou optez pour la livraison à domicile. Le plein est fait, le véhicule est inspecte et prêt à prendre la route.',
   },
 ]
 
@@ -25,8 +25,8 @@ export default function HowItWorks() {
   return (
     <section className="section-steps">
       <div className="steps-header">
-        <p className="section-label">Simple Process</p>
-        <h2 className="section-title">Get Rolling in 4 Steps</h2>
+        <p className="section-label">Simple &amp; Rapide</p>
+        <h2 className="section-title">Louez en 4 étapes</h2>
       </div>
 
       <div className="steps-layout">

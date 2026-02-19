@@ -2,23 +2,23 @@ const TILES = [
   {
     id: 1,
     tall: true,
-    label: 'Exclusive Models',
+    label: 'Modèles exclusifs',
     img: 'https://images.unsplash.com/photo-1591154669695-5f2a8d20c089?q=80&w=2074&auto=format&fit=crop',
-    alt: 'Dark luxury car',
+    alt: 'Voiture de luxe',
   },
   {
     id: 2,
     tall: false,
-    label: 'Premium Interiors',
+    label: 'Intérieurs premium',
     img: 'https://images.unsplash.com/photo-1567818735868-e71b99932e29?q=80&w=2074&auto=format&fit=crop',
-    alt: 'Steering wheel',
+    alt: 'Volant',
   },
   {
     id: 3,
     tall: false,
-    label: 'Track Experience',
+    label: 'Expérience circuit',
     img: 'https://images.unsplash.com/photo-1621135802920-133df287f89c?q=80&w=2080&auto=format&fit=crop',
-    alt: 'Lamborghini on track',
+    alt: 'Lamborghini sur circuit',
   },
 ]
 
@@ -27,10 +27,10 @@ export default function PremiumService() {
     <section className="section-premium">
       <div className="premium-header">
         <div>
-          <p className="section-label">Why Choose Us</p>
-          <h2 className="section-title">Premium service,<br />zero hassle</h2>
+          <p className="section-label">Pourquoi nous choisir</p>
+          <h2 className="section-title">Service premium,<br />zéro complication</h2>
         </div>
-        <button className="pill-btn outline">Explore All Services →</button>
+        <button className="pill-btn outline">Découvrir nos services →</button>
       </div>
 
       <div className="premium-mosaic">
