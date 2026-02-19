@@ -1,37 +1,25 @@
-function Hero() {
+import { Link } from 'react-router-dom'
+
+export default function Hero() {
   return (
     <section className="hero">
+      <div className="hero-bg">
+        <img
+          src="https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?q=80&w=2200&auto=format&fit=crop"
+          alt="Premium Car"
+        />
+      </div>
       <div className="hero-content">
-        <h1>
-          CONDUISEZ
-          <br />
-          L&apos;EXCELLENCE
-        </h1>
-        <p className="hero-subtitle">Location de voitures de sport premium</p>
-
-        <div className="hero-stats">
-          <div className="stat">
-            <div className="stat-number">50+</div>
-            <div className="stat-label">Véhicules Premium</div>
-          </div>
-          <div className="stat">
-            <div className="stat-number">24/7</div>
-            <div className="stat-label">Service Client</div>
-          </div>
-          <div className="stat">
-            <div className="stat-number">100%</div>
-            <div className="stat-label">Satisfaction</div>
-          </div>
-        </div>
-
-        <div className="hero-cta">
-          <a href="#fleet" className="cta-primary">
-            Découvrir la Flotte
-          </a>
-        </div>
+        <p className="hero-eyebrow">Premium Car Rental</p>
+        <h1>Premium Car Rental<br />in Los Angeles</h1>
+        <p className="hero-sub">
+          Experience the thrill of driving the world's most exclusive vehicles.
+          Delivered to your door in 90 minutes.
+        </p>
+        <Link to="/cars">
+          <button className="pill-btn white">Book Now →</button>
+        </Link>
       </div>
     </section>
   )
 }
-
-export default Hero

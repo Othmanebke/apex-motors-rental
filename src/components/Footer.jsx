@@ -1,44 +1,69 @@
-function Footer() {
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
+
+export default function Footer() {
+  const [email, setEmail] = useState('')
+
   return (
-    <footer id="contact">
-      <div className="footer-content">
+    <footer>
+      <div className="footer-grid">
         <div className="footer-brand">
-          <h3>APEX MOTORS</h3>
-          <p>
-            Location de voitures de sport premium. Mercedes-AMG, Audi Sport, BMW M, Porsche,
-            Ferrari, Lamborghini et plus encore.
-          </p>
+          <div className="footer-brand-name">Luxury</div>
+          <p>Premium car rental in Los Angeles. Mercedes-AMG, Porsche, Ferrari, Lamborghini and more, delivered to your door.</p>
+          <div className="footer-addr">
+            8900 Sunset Blvd, Suite 210<br />
+            Los Angeles, CA 90069, USA<br />
+            <br />
+            +1 (323) 555-7952<br />
+            info@luxury.com
+          </div>
         </div>
 
-        <div className="footer-section">
+        <div className="footer-col">
           <h4>Services</h4>
-          <a href="#">Location Courte Durée</a>
-          <a href="#">Location Longue Durée</a>
-          <a href="#">Forfaits Week-end</a>
-          <a href="#">Événements Spéciaux</a>
+          <Link to="/cars">Cars</Link>
+          <a href="#">Rental Terms</a>
+          <a href="#">How to Rent</a>
+          <a href="#">Testimonials</a>
+          <a href="#">News</a>
         </div>
 
-        <div className="footer-section">
-          <h4>Informations</h4>
-          <a href="#">À Propos</a>
-          <a href="#">FAQ</a>
-          <a href="#">Conditions</a>
-          <a href="#">Assurance</a>
+        <div className="footer-col">
+          <h4>Help</h4>
+          <a href="#">Rent a Car</a>
+          <a href="#">Return Info</a>
+          <a href="#">Driver's Help</a>
         </div>
 
-        <div className="footer-section">
-          <h4>Contact</h4>
-          <a href="tel:+33142860000">+33 1 42 86 00 00</a>
-          <a href="mailto:contact@apexmotors.fr">contact@apexmotors.fr</a>
-          <a href="#">Paris — Monaco — Genève</a>
+        <div className="footer-newsletter">
+          <h4>Stay up to date with latest news &amp; special offers</h4>
+          <p>Subscribe to our newsletter. No spam, ever.</p>
+          <div className="newsletter-form">
+            <input
+              type="email"
+              className="newsletter-input"
+              placeholder="Your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <button
+              className="pill-btn white"
+              style={{ padding: '0.6rem 1rem', fontSize: '0.78rem', flexShrink: 0 }}
+              onClick={() => { if (email) { alert('Subscribed!'); setEmail('') } }}
+            >
+              Join
+            </button>
+          </div>
         </div>
       </div>
 
       <div className="footer-bottom">
-        <p>© {new Date().getFullYear()} Apex Motors. Tous droits réservés.</p>
+        <span>© {new Date().getFullYear()} Luxury. All rights reserved.</span>
+        <div style={{ display: 'flex', gap: '1.5rem' }}>
+          <a href="#" style={{ color: 'inherit' }}>Privacy Policy</a>
+          <a href="#" style={{ color: 'inherit' }}>Terms of Service</a>
+        </div>
       </div>
     </footer>
   )
 }
-
-export default Footer
