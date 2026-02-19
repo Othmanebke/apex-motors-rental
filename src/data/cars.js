@@ -1,0 +1,96 @@
+export const cars = [
+  {
+    id: 1,
+    brand: 'Mercedes-AMG',
+    name: 'GT 63 S 4MATIC+',
+    image: 'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?q=80&w=2070&auto=format&fit=crop',
+    badge: 'Populaire',
+    specs: [
+      { icon: '⚡', value: '639 ch', label: 'Puissance' },
+      { icon: '🏁', value: '3.2s', label: '0-100 km/h' },
+      { icon: '🎯', value: '315 km/h', label: 'Vitesse max' },
+    ],
+    price: '890€',
+    category: 'Coupé',
+    type: 'Mercedes-AMG',
+  },
+  {
+    id: 2,
+    brand: 'Audi Sport',
+    name: 'RS e-tron GT',
+    image: 'https://images.unsplash.com/photo-1603386329225-868f9b1ee6b9?q=80&w=2069&auto=format&fit=crop',
+    badge: 'Nouveau',
+    specs: [
+      { icon: '⚡', value: '646 ch', label: 'Puissance' },
+      { icon: '🏁', value: '3.3s', label: '0-100 km/h' },
+      { icon: '🔋', value: '472 km', label: 'Autonomie' },
+    ],
+    price: '950€',
+    category: 'Coupé',
+    type: 'Audi Sport',
+  },
+  {
+    id: 3,
+    brand: 'Porsche',
+    name: '911 Turbo S',
+    image: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?q=80&w=2070&auto=format&fit=crop',
+    badge: 'Exclusive',
+    specs: [
+      { icon: '⚡', value: '650 ch', label: 'Puissance' },
+      { icon: '🏁', value: '2.7s', label: '0-100 km/h' },
+      { icon: '🎯', value: '330 km/h', label: 'Vitesse max' },
+    ],
+    price: '1,290€',
+    category: 'Coupé',
+    type: 'Porsche',
+  },
+  {
+    id: 4,
+    brand: 'BMW M',
+    name: 'M8 Competition',
+    image: 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?q=80&w=2070&auto=format&fit=crop',
+    badge: null,
+    specs: [
+      { icon: '⚡', value: '625 ch', label: 'Puissance' },
+      { icon: '🏁', value: '3.2s', label: '0-100 km/h' },
+      { icon: '🎯', value: '305 km/h', label: 'Vitesse max' },
+    ],
+    price: '850€',
+    category: 'Coupé',
+    type: 'BMW M',
+  },
+  {
+    id: 5,
+    brand: 'Ferrari',
+    name: 'F8 Tributo',
+    image: 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?q=80&w=2070&auto=format&fit=crop',
+    badge: 'VIP',
+    specs: [
+      { icon: '⚡', value: '720 ch', label: 'Puissance' },
+      { icon: '🏁', value: '2.9s', label: '0-100 km/h' },
+      { icon: '🎯', value: '340 km/h', label: 'Vitesse max' },
+    ],
+    price: '2,500€',
+    category: 'Supercar',
+    type: 'Ferrari',
+  },
+  {
+    id: 6,
+    brand: 'Lamborghini',
+    name: 'Huracán EVO',
+    image: 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?q=80&w=2074&auto=format&fit=crop',
+    badge: 'VIP',
+    specs: [
+      { icon: '⚡', value: '640 ch', label: 'Puissance' },
+      { icon: '🏁', value: '2.9s', label: '0-100 km/h' },
+      { icon: '🎯', value: '325 km/h', label: 'Vitesse max' },
+    ],
+    price: '2,800€',
+    category: 'Supercar',
+    type: 'Lamborghini',
+  },
+]
+
+export const brands = ['Toutes', 'Mercedes-AMG', 'Audi Sport', 'BMW M', 'Porsche', 'Ferrari', 'Lamborghini']
+export const types = ['Tous', 'Coupé', 'Cabriolet', 'SUV Sport', 'Supercar']
+export const budgets = ['Tous', '200€ - 500€', '500€ - 1000€', '1000€ - 2000€', '2000€+']
