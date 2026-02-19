@@ -9,7 +9,6 @@ import FAQ from '../components/FAQ'
 import NewsSection from '../components/NewsSection'
 import CtaBanner from '../components/CtaBanner'
 import ReservationModal from '../components/ReservationModal'
-import TireTracks from '../components/TireTracks'
 
 export default function HomePage() {
   const [selectedCar, setSelectedCar] = useState(null)
@@ -22,8 +21,6 @@ export default function HomePage() {
       <Testimonials />
       <HowItWorks />
       <PremiumService />
-      {/* Traces de pneu fixes — visibles depuis la section Conditions */}
-      <TireTracks variant="faq" />
       <FAQ />
       <NewsSection />
       <CtaBanner />
