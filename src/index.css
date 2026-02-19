@@ -91,18 +91,14 @@ img { display: block; }
 /* ─── TIRE TRACKS DECORATION ─── */
 .tire-deco {
   pointer-events: none;
-  z-index: 1;
-  overflow: visible;
-}
-.tire-deco--topleft {
-  position: fixed;
-  top: 0;
-  left: 0;
+  z-index: 0;
 }
 .tire-deco--faq {
-  position: absolute;
-  top: -60px;
+  position: fixed;
   right: 0;
+  top: 45%;
+  transform: translateY(-50%);
+  z-index: 0;
 }
 /* Chaque bloc de pneu apparaît en cascade via animationDelay inline */
 .tread-unit {

@@ -16,22 +16,15 @@ export default function HomePage() {
 
   return (
     <>
-      {/* Traces de pneu haut gauche — décoratives */}
-      <TireTracks variant="topleft" />
-
       <Hero />
       <ChooseYourRide onBook={setSelectedCar} />
       <RentalTerms />
       <Testimonials />
       <HowItWorks />
       <PremiumService />
-
-      {/* Traces de pneu près de la FAQ */}
-      <div style={{ position: 'relative' }}>
-        <TireTracks variant="faq" />
-        <FAQ />
-      </div>
-
+      {/* Traces de pneu fixes — visibles depuis la section Conditions */}
+      <TireTracks variant="faq" />
+      <FAQ />
       <NewsSection />
       <CtaBanner />
       {selectedCar && (
