@@ -79,8 +79,43 @@ export function AuthProvider({ children }) {
     updateUser({ forfait: forfaitId, forfaitSince: new Date().toISOString() })
   }
 
+  const socialLogin = ({ email, prenom, nom, provider }) => {
+    const emailLow = email.trim().toLowerCase()
+    // Admin check
+    if (emailLow === ADMIN.email) {
+      setUser(ADMIN)
+      localStorage.setItem('apexCurrentUser', JSON.stringify(ADMIN))
+      return { ok: true }
+    }
+    const users = getUsers()
+    // Already registered → just log in
+    const existing = users.find(u => u.email.toLowerCase() === emailLow)
+    if (existing) {
+      setUser(existing)
+      localStorage.setItem('apexCurrentUser', JSON.stringify(existing))
+      return { ok: true }
+    }
+    // New user via social
+    const newUser = {
+      id: `u_${Date.now()}`,
+      nom: nom || 'Utilisateur',
+      prenom: prenom || provider,
+      email: emailLow,
+      password: null,
+      provider,
+      role: 'client',
+      forfait: null,
+      forfaitSince: null,
+      createdAt: new Date().toISOString(),
+    }
+    saveUsers([...users, newUser])
+    setUser(newUser)
+    localStorage.setItem('apexCurrentUser', JSON.stringify(newUser))
+    return { ok: true }
+  }
+
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, updateUser, setForfait }}>
+    <AuthContext.Provider value={{ user, login, register, socialLogin, logout, updateUser, setForfait }}>
       {children}
     </AuthContext.Provider>
   )

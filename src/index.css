@@ -1681,6 +1681,251 @@ footer { background: var(--bg); border-top: 1px solid var(--border); padding: 4r
 }
 .auth-demo__btn:hover { background: rgba(255,255,255,0.1); color: var(--white); }
 
+/* ─────────────────────────────────────────────
+   AUTH TABS  (login / register toggle)
+───────────────────────────────────────────── */
+.auth-tabs {
+  position: relative;
+  display: flex;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 4px;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+.auth-tab {
+  flex: 1; border: none; background: none; cursor: pointer;
+  color: var(--gray); font-size: 0.875rem; font-weight: 600;
+  padding: 0.6rem 0.5rem; border-radius: 9px; position: relative; z-index: 1;
+  transition: color 0.25s;
+  font-family: 'Montserrat', sans-serif;
+}
+.auth-tab--active { color: var(--white); }
+.auth-tab__slider {
+  position: absolute; top: 4px; bottom: 4px;
+  left: 4px; width: calc(50% - 4px);
+  background: #CC0000;
+  border-radius: 9px;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 10px rgba(204,0,0,0.5);
+}
+.auth-tab__slider--right { transform: translateX(100%); }
+
+/* ─────────────────────────────────────────────
+   SOCIAL BUTTONS
+───────────────────────────────────────────── */
+.auth-social {
+  display: flex; flex-direction: column; gap: 0.6rem;
+  margin-bottom: 0.25rem;
+}
+.auth-social__btn {
+  display: flex; align-items: center; justify-content: center; gap: 0.7rem;
+  padding: 0.72rem 1rem; border-radius: 10px; border: none;
+  font-size: 0.875rem; font-weight: 600; cursor: pointer;
+  transition: transform 0.15s, opacity 0.2s;
+  font-family: 'Montserrat', sans-serif;
+  width: 100%;
+}
+.auth-social__btn:hover { transform: translateY(-1px); opacity: 0.92; }
+.auth-social__btn:active { transform: scale(0.98); }
+.auth-social__btn--google {
+  background: #fff; color: #3c4043;
+  border: 1px solid #dadce0;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}
+.auth-social__btn--facebook {
+  background: #1877F2; color: #fff;
+  box-shadow: 0 1px 6px rgba(24,119,242,0.4);
+}
+
+/* ─────────────────────────────────────────────
+   OAUTH POPUP
+───────────────────────────────────────────── */
+.oauth-overlay {
+  position: fixed; inset: 0; z-index: 9998;
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 1rem;
+  animation: fadeIn 0.2s ease;
+}
+.oauth-popup {
+  background: #fff; color: #1a1a1a;
+  border-radius: 16px; width: 100%; max-width: 400px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  overflow: hidden;
+  animation: popupIn 0.28s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes popupIn {
+  from { opacity: 0; transform: scale(0.88) translateY(20px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+.oauth-popup__header {
+  display: flex; align-items: center; gap: 0.75rem;
+  padding: 1.25rem 1.25rem 1rem;
+  border-top: 4px solid #4285F4;
+  position: relative;
+}
+.oauth-popup__provider { font-size: 1rem; font-weight: 700; color: #1a1a1a; }
+.oauth-popup__sub      { font-size: 0.75rem; color: #666; margin-top: 1px; }
+.oauth-popup__close {
+  position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);
+  background: none; border: none; cursor: pointer;
+  color: #888; font-size: 1rem; line-height: 1;
+  transition: color 0.2s;
+}
+.oauth-popup__close:hover { color: #333; }
+.oauth-popup__body { padding: 0.75rem 1.5rem 1.25rem; }
+.oauth-popup__title {
+  font-size: 0.95rem; font-weight: 700; margin-bottom: 0.35rem; color: #1a1a1a;
+}
+.oauth-popup__hint {
+  font-size: 0.8rem; color: #666; line-height: 1.5; margin-bottom: 1rem;
+}
+.oauth-popup__field { margin-bottom: 0.5rem; }
+.oauth-popup__input {
+  width: 100%; padding: 0.7rem 0.9rem; border-radius: 8px;
+  border: 1.5px solid #ddd; outline: none; font-size: 0.9rem;
+  transition: border-color 0.2s; box-sizing: border-box;
+  font-family: inherit;
+}
+.oauth-popup__input:focus { border-color: #4285F4; }
+.oauth-popup__error {
+  font-size: 0.8rem; color: #d93025; margin-bottom: 0.5rem;
+}
+.oauth-popup__actions {
+  display: flex; gap: 0.75rem; margin-top: 1rem;
+}
+.oauth-popup__cancel {
+  flex: 1; padding: 0.65rem; border-radius: 8px;
+  border: 1.5px solid #ddd; background: none; color: #555;
+  font-size: 0.875rem; font-weight: 600; cursor: pointer;
+  transition: all 0.2s; font-family: inherit;
+}
+.oauth-popup__cancel:hover { background: #f5f5f5; }
+.oauth-popup__confirm {
+  flex: 2; padding: 0.65rem 1rem; border-radius: 8px;
+  border: none; color: #fff; font-size: 0.875rem; font-weight: 700;
+  cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+  transition: opacity 0.2s, transform 0.15s; font-family: inherit;
+}
+.oauth-popup__confirm:hover { opacity: 0.9; transform: translateY(-1px); }
+.oauth-popup__loading {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 0.75rem; padding: 1rem 0;
+  font-size: 0.9rem; color: #444;
+}
+.oauth-popup__spinner {
+  width: 36px; height: 36px; border: 3px solid #e8e8e8;
+  border-radius: 50%; animation: spin 0.75s linear infinite;
+}
+.oauth-popup__check {
+  font-size: 2.2rem; font-weight: 700; animation: checkBounce 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes checkBounce {
+  from { transform: scale(0); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+.oauth-popup__footer {
+  display: flex; align-items: center; gap: 0.4rem;
+  padding: 0.65rem 1.5rem; background: #f8f8f8;
+  font-size: 0.72rem; color: #999;
+  border-top: 1px solid #eee;
+}
+
+/* ─────────────────────────────────────────────
+   PORSCHE TRANSITION OVERLAY
+───────────────────────────────────────────── */
+.porsche-overlay {
+  position: fixed; inset: 0; z-index: 9990;
+  display: flex; align-items: center; justify-content: flex-start;
+  pointer-events: none;
+  overflow: hidden;
+}
+/* Dark curtain that flashes */
+.porsche-overlay::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0.55);
+  animation: curtainFlash 0.98s ease forwards;
+}
+@keyframes curtainFlash {
+  0%   { opacity: 0; }
+  15%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+/* The car itself */
+.porsche-car {
+  position: absolute;
+  top: 50%; transform: translateY(-50%);
+  width: 480px;
+  filter: drop-shadow(0 12px 40px rgba(204,0,0,0.7)) drop-shadow(0 0 80px rgba(204,0,0,0.3));
+}
+.porsche-svg { width: 100%; height: auto; }
+
+/* Going left → right (register mode) */
+.porsche-car--right {
+  animation: carGoRight 0.98s cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
+}
+@keyframes carGoRight {
+  0%   { left: -520px; }
+  100% { left: calc(100vw + 100px); }
+}
+
+/* Going right → left (login mode) — car is flipped horizontally */
+.porsche-car--left {
+  transform: translateY(-50%) scaleX(-1);
+  animation: carGoLeft 0.98s cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
+}
+@keyframes carGoLeft {
+  0%   { left: calc(100vw + 100px); }
+  100% { left: -520px; }
+}
+
+/* Tire tracks on the ground */
+.porsche-tracks {
+  position: absolute; bottom: 42%; left: 0; right: 0;
+  height: 6px;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(80,20,0,0.55) 0px,
+    rgba(80,20,0,0.55) 18px,
+    transparent 18px,
+    transparent 32px
+  );
+  animation: tracksAppear 0.98s ease forwards;
+}
+.porsche-tracks--left {
+  transform: scaleX(-1);
+}
+@keyframes tracksAppear {
+  0%   { opacity: 0; clip-path: inset(0 100% 0 0); }
+  20%  { opacity: 1; }
+  60%  { clip-path: inset(0 0% 0 0); }
+  90%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Form fade in/out during transition */
+.auth-card--visible {
+  opacity: 1; transform: translateY(0);
+  transition: opacity 0.3s ease 0.05s, transform 0.3s ease 0.05s;
+}
+.auth-card--hidden {
+  opacity: 0; transform: translateY(6px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+/* Third orb for visual interest */
+.auth-bg__orb--3 {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 600px; height: 600px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.02) 0%, transparent 60%);
+  pointer-events: none;
+}
+
 /* ═══════════════════════════════════════════════════════════════
    DASHBOARD — shared layout
 ═══════════════════════════════════════════════════════════════ */
