@@ -174,6 +174,11 @@ export default function Navbar() {
                 title={`${user.prenom || ''} ${user.nom || ''} — Mon espace`}
               >
                 {initials}
+                {user.forfait && (
+                  <span className="navbar-avatar__badge" title={`Forfait ${user.forfait}`}>
+                    {user.forfait === 'mois' ? '🏆' : user.forfait === 'semaine' ? '★' : '⚡'}
+                  </span>
+                )}
               </Link>
             ) : (
               <Link to="/login" className="pill-btn red-btn" style={{ textDecoration: 'none' }}>Connexion</Link>

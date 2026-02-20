@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Hero from '../components/Hero'
+import StatsCounter from '../components/StatsCounter'
 import ChooseYourRide from '../components/ChooseYourRide'
 import RentalTerms from '../components/RentalTerms'
 import Testimonials from '../components/Testimonials'
@@ -17,6 +18,7 @@ export default function HomePage() {
   return (
     <>
       <Hero />
+      <StatsCounter />
       <ChooseYourRide onBook={setSelectedCar} />
       <OffersSection />
       <RentalTerms />
