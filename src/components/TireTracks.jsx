@@ -1,9 +1,12 @@
 /**
- * TireTracks — traces de pneu décoratives en SVG rouge animées
+ * TireTracks — traces de pneu décoratives, style luxury gold
  * variant="topleft" | "faq"
  */
 export default function TireTracks({ variant = 'topleft' }) {
-  // Outer <g> handles position, inner <g> gets the CSS animation
+  /**
+   * Tread unit — 6 slim oval imprints (2 rows × 3 cols)
+   * Mimics a real performance tyre's contact patch, very subtle gold.
+   */
   const Tread = ({ x, y, rotate = 0, delay = 0 }) => (
     <g transform={`translate(${x},${y}) rotate(${rotate})`}>
       <g
@@ -14,14 +17,14 @@ export default function TireTracks({ variant = 'topleft' }) {
           transformOrigin: 'center',
         }}
       >
-        {/* rangée 1 */}
-        <rect x="0"  y="0"  width="18" height="8" rx="2" />
-        <rect x="22" y="0"  width="18" height="8" rx="2" />
-        <rect x="44" y="0"  width="18" height="8" rx="2" />
-        {/* rangée 2 */}
-        <rect x="0"  y="12" width="18" height="8" rx="2" />
-        <rect x="22" y="12" width="18" height="8" rx="2" />
-        <rect x="44" y="12" width="18" height="8" rx="2" />
+        {/* row 1 — three elongated ovals */}
+        <ellipse cx="9"  cy="4"  rx="8.5" ry="3" />
+        <ellipse cx="30" cy="4"  rx="8.5" ry="3" />
+        <ellipse cx="51" cy="4"  rx="8.5" ry="3" />
+        {/* row 2 — offset slightly for realism */}
+        <ellipse cx="9"  cy="15" rx="8.5" ry="3" />
+        <ellipse cx="30" cy="15" rx="8.5" ry="3" />
+        <ellipse cx="51" cy="15" rx="8.5" ry="3" />
       </g>
     </g>
   )
@@ -36,7 +39,7 @@ export default function TireTracks({ variant = 'topleft' }) {
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <g fill="rgba(230,57,70,0.2)">
+          <g fill="rgba(184,134,11,0.18)">
             {/* Piste gauche — diagonale vers le bas-droite */}
             <Tread x={10}  y={0}   rotate={-30} delay={0.5}  />
             <Tread x={35}  y={38}  rotate={-30} delay={0.65} />
@@ -68,7 +71,7 @@ export default function TireTracks({ variant = 'topleft' }) {
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <g fill="rgba(230,57,70,0.15)">
+        <g fill="rgba(184,134,11,0.14)">
           {/* Piste gauche — quasi horizontale, légère pente */}
           <Tread x={0}   y={30}  rotate={-8} delay={0.2}  />
           <Tread x={72}  y={18}  rotate={-8} delay={0.35} />

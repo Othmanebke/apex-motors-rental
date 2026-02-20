@@ -1,39 +1,120 @@
+/* ── Porsche 911 — chic luxury silhouette, midnight black + gold ── */
 export default function Porsche911() {
+  const fwx = 148, fwy = 132   // front wheel centre
+  const rwx = 388, rwy = 132   // rear wheel centre
+
+  /* 5-spoke turbine rim helper */
+  const TurbineRim = ({ cx, cy, ri, ro, strokeW }) =>
+    [0, 72, 144, 216, 288].map(a => {
+      const r0 = (a)          * Math.PI / 180
+      const rQ = (a + 30)     * Math.PI / 180
+      const rE = (a)          * Math.PI / 180
+      const mid = (ri + ro) / 2
+      return (
+        <path
+          key={a}
+          d={`M ${cx + Math.cos(r0) * ri} ${cy + Math.sin(r0) * ri} Q ${cx + Math.cos(rQ) * mid} ${cy + Math.sin(rQ) * mid} ${cx + Math.cos(rE) * ro} ${cy + Math.sin(rE) * ro}`}
+          stroke="#686868" strokeWidth={strokeW} fill="none" strokeLinecap="round"
+        />
+      )
+    })
+
   return (
-    <svg viewBox="0 0 500 160" xmlns="http://www.w3.org/2000/svg" className="porsche-svg">
-      <ellipse cx="132" cy="148" rx="78" ry="9" fill="rgba(0,0,0,0.45)" />
-      <ellipse cx="360" cy="148" rx="84" ry="9" fill="rgba(0,0,0,0.45)" />
-      <path d="M 18 118 L 22 102 Q 28 90 36 84 L 48 78 Q 60 70 70 58 L 90 40 Q 102 20 130 18 L 240 16 Q 262 15 278 26 L 308 56 Q 320 70 334 76 L 368 80 Q 398 82 432 94 L 448 108 L 452 118 Q 440 122 360 122 A 38 38 0 0 1 280 122 L 210 122 Q 190 122 132 122 A 36 36 0 0 1 52 122 L 18 122 Z" fill="#CC0000" stroke="#990000" strokeWidth="1.5"/>
-      <path d="M 330 82 Q 360 78 400 90 L 420 100 L 430 112 Q 400 108 360 108 A 38 38 0 0 1 282 108 L 290 78 Z" fill="#BB0000"/>
-      <path d="M 18 118 L 22 102 Q 26 92 34 87 L 50 83 L 52 92 Q 44 96 38 104 L 34 118 Z" fill="#AA0000"/>
-      <rect x="50" y="112" width="230" height="8" rx="4" fill="#990000"/>
-      <path d="M 93 56 Q 102 28 130 22 L 236 20 Q 256 19 270 32 L 298 60 L 240 66 Q 195 70 140 68 L 93 56 Z" fill="#0d1b2a" stroke="#1a3050" strokeWidth="1.2"/>
-      <path d="M 170 66 L 175 21" stroke="#0a1520" strokeWidth="2.5"/>
-      <path d="M 32 87 Q 44 81 56 83 L 54 96 Q 44 100 34 97 Z" fill="#fffde0"/>
-      <path d="M 30 83 Q 50 76 64 79" stroke="#fffbe6" strokeWidth="3" strokeLinecap="round" opacity="0.9"/>
-      <path d="M 388 86 Q 428 90 450 100 L 448 112 Q 424 108 386 104 Z" fill="#ff2020"/>
-      <path d="M 390 87 Q 428 91 448 100" stroke="#ff6060" strokeWidth="1.5" opacity="0.7"/>
-      <path d="M 132 120 L 130 72 Q 130 64 136 60 L 165 66 L 170 120" stroke="#AA0000" strokeWidth="1" fill="none"/>
-      <path d="M 72 56 Q 150 44 260 42 Q 295 42 308 52" stroke="rgba(255,255,255,0.22)" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
-      <path d="M 124 20 Q 200 16 258 20" stroke="rgba(255,255,255,0.15)" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
-      <circle cx="132" cy="127" r="28" fill="#1a1a1a"/>
-      <circle cx="132" cy="127" r="20" fill="#262626" stroke="#444" strokeWidth="1.5"/>
-      <circle cx="132" cy="127" r="9" fill="#111" stroke="#555" strokeWidth="1"/>
-      <circle cx="132" cy="127" r="3.5" fill="#888"/>
-      {[0,60,120,180,240,300].map(a => { const rad = a*Math.PI/180; return <line key={a} x1={132+Math.cos(rad)*9} y1={127+Math.sin(rad)*9} x2={132+Math.cos(rad)*19} y2={127+Math.sin(rad)*19} stroke="#555" strokeWidth="3" strokeLinecap="round"/> })}
-      <circle cx="360" cy="127" r="30" fill="#1a1a1a"/>
-      <circle cx="360" cy="127" r="22" fill="#262626" stroke="#444" strokeWidth="1.5"/>
-      <circle cx="360" cy="127" r="10" fill="#111" stroke="#555" strokeWidth="1"/>
-      <circle cx="360" cy="127" r="4" fill="#888"/>
-      {[0,60,120,180,240,300].map(a => { const rad = a*Math.PI/180; return <line key={a} x1={360+Math.cos(rad)*10} y1={127+Math.sin(rad)*10} x2={360+Math.cos(rad)*21} y2={127+Math.sin(rad)*21} stroke="#555" strokeWidth="3.5" strokeLinecap="round"/> })}
-      <circle cx="432" cy="115" r="5.5" fill="#222" stroke="#555" strokeWidth="1"/>
-      <circle cx="444" cy="115" r="5.5" fill="#222" stroke="#555" strokeWidth="1"/>
-      <circle cx="432" cy="115" r="3" fill="#111"/>
-      <circle cx="444" cy="115" r="3" fill="#111"/>
-      <text x="294" y="76" fill="rgba(255,255,255,0.55)" fontSize="7" fontFamily="monospace" fontWeight="700" letterSpacing="1">911</text>
-      <text x="140" y="102" fill="rgba(255,255,255,0.35)" fontSize="7.5" fontFamily="Montserrat,sans-serif" fontWeight="800" letterSpacing="2">APEX</text>
-      <line x1="0" y1="90" x2="60" y2="88" stroke="rgba(255,255,255,0.08)" strokeWidth="5" strokeLinecap="round"/>
-      <line x1="0" y1="100" x2="45" y2="98" stroke="rgba(255,255,255,0.05)" strokeWidth="3" strokeLinecap="round"/>
+    <svg viewBox="0 0 520 168" xmlns="http://www.w3.org/2000/svg" className="porsche-svg">
+
+      {/* ── Shadows ── */}
+      <ellipse cx="148" cy="160" rx="105" ry="7" fill="rgba(0,0,0,0.28)" />
+      <ellipse cx="388" cy="160" rx="110" ry="7" fill="rgba(0,0,0,0.28)" />
+
+      {/* ── Body silhouette — complete outline with wheel arch cutouts ── */}
+      <path
+        d="M 26 134 L 22 120 Q 23 102 38 94 L 56 86 L 96 80 L 134 76
+           L 152 48 Q 164 24 182 18 L 312 14 L 350 15
+           Q 376 16 396 36 L 414 54 Q 440 66 458 78
+           Q 472 84 484 100 L 490 118 L 490 134
+           Q 474 134 442 134 Q 442 98 388 98 Q 334 98 334 134
+           L 192 134 Q 192 98 148 98 Q 104 98 104 134 Z"
+        fill="#111111" stroke="#2a2a2a" strokeWidth="1.2"
+      />
+
+      {/* ── Upper body tonal gradient band ── */}
+      <path
+        d="M 96 80 L 134 76 L 152 48 Q 164 24 182 18 L 312 14 L 352 15 Q 328 26 272 30 L 192 34 L 162 52 L 150 68 Z"
+        fill="rgba(255,255,255,0.04)"
+      />
+
+      {/* ── Windshield ── */}
+      <path
+        d="M 150 51 Q 163 26 182 20 L 308 16 L 308 56 Q 254 62 202 66 L 170 68 Z"
+        fill="#0c1d2c" stroke="#1b3248" strokeWidth="1.1" opacity="0.96"
+      />
+      {/* windshield gloss */}
+      <path d="M 166 34 Q 232 20 296 17" stroke="rgba(255,255,255,0.15)" strokeWidth="1.8" fill="none" strokeLinecap="round"/>
+
+      {/* ── A-pillar ── */}
+      <line x1="170" y1="68" x2="150" y2="51" stroke="#0f0f0f" strokeWidth="3.5"/>
+
+      {/* ── Rear window ── */}
+      <path
+        d="M 310 16 L 350 15 Q 374 16 394 36 L 412 54 L 362 61 Z"
+        fill="#0c1d2c" stroke="#1b3248" strokeWidth="1" opacity="0.92"
+      />
+      {/* rear glass gloss */}
+      <path d="M 320 18 Q 356 17 386 30" stroke="rgba(255,255,255,0.09)" strokeWidth="1.4" fill="none" strokeLinecap="round"/>
+
+      {/* ── Gold body pinstripe ── */}
+      <path d="M 104 133 Q 260 127 490 133" stroke="#B8860B" strokeWidth="1.6" fill="none" opacity="0.65"/>
+
+      {/* ── Door crease line ── */}
+      <path d="M 136 84 Q 280 80 445 88" stroke="rgba(255,255,255,0.07)" strokeWidth="2" fill="none"/>
+
+      {/* ── Front bumper / splitter ── */}
+      <path d="M 26 134 L 22 120 Q 23 102 38 94 L 55 87 L 62 87 L 56 134" fill="#0b0b0b" stroke="#222" strokeWidth="1"/>
+      {/* gold splitter lip */}
+      <line x1="23" y1="136" x2="64" y2="131" stroke="#B8860B" strokeWidth="2.4" strokeLinecap="round"/>
+
+      {/* ── Headlight cluster ── */}
+      <path d="M 34 102 Q 40 92 60 92 L 62 104 Q 50 108 36 113 Z" fill="#e6ddb8" opacity="0.88"/>
+      {/* DRL strip */}
+      <path d="M 30 100 Q 45 88 64 91" stroke="#ffe4a0" strokeWidth="2" fill="none" strokeLinecap="round" opacity="0.75"/>
+      {/* headlight chrome rim */}
+      <path d="M 32 103 Q 40 91 62 93" stroke="#C9A227" strokeWidth="1.2" fill="none" strokeLinecap="round" opacity="0.7"/>
+
+      {/* ── Rear bumper / diffuser ── */}
+      <path d="M 480 102 Q 490 112 490 134 L 462 134 Q 462 112 468 100 Z" fill="#0d0d0d" stroke="#1e1e1e" strokeWidth="1"/>
+      {/* taillight strip */}
+      <path d="M 484 108 Q 490 116 490 130" stroke="#CC0000" strokeWidth="4.5" fill="none" strokeLinecap="round"/>
+      <path d="M 486 110 Q 490 117 490 128" stroke="#ff5555" strokeWidth="1.5" fill="none" strokeLinecap="round" opacity="0.65"/>
+
+      {/* ── "APEX MOTORS" door badge ── */}
+      <text x="200" y="112" fill="rgba(184,134,11,0.45)" fontSize="8" fontFamily="'Montserrat',sans-serif" fontWeight="800" letterSpacing="3.5">APEX MOTORS</text>
+      {/* 911 badge */}
+      <text x="356" y="74" fill="rgba(255,255,255,0.35)" fontSize="7" fontFamily="monospace" fontWeight="700" letterSpacing="2">911</text>
+
+      {/* ── FRONT WHEEL ── */}
+      <circle cx={fwx} cy={fwy} r="34" fill="#0d0d0d" stroke="#1e1e1e" strokeWidth="1.2"/>
+      {/* brake disc */}
+      <circle cx={fwx} cy={fwy} r="22" fill="none" stroke="#2a2a2a" strokeWidth="5"/>
+      {/* turbine spokes */}
+      <TurbineRim cx={fwx} cy={fwy} ri={10} ro={28} strokeW={4} />
+      {/* outer rim lip */}
+      <circle cx={fwx} cy={fwy} r="30" fill="none" stroke="#3c3c3c" strokeWidth="1"/>
+      {/* centre cap */}
+      <circle cx={fwx} cy={fwy} r="8" fill="#141414" stroke="#3a3a3a" strokeWidth="1.2"/>
+      <circle cx={fwx} cy={fwy} r="3.5" fill="#B8860B"/>
+
+      {/* ── REAR WHEEL (wider) ── */}
+      <circle cx={rwx} cy={rwy} r="36" fill="#0d0d0d" stroke="#1e1e1e" strokeWidth="1.2"/>
+      <circle cx={rwx} cy={rwy} r="24" fill="none" stroke="#2a2a2a" strokeWidth="5"/>
+      <TurbineRim cx={rwx} cy={rwy} ri={11} ro={30} strokeW={4.5} />
+      <circle cx={rwx} cy={rwy} r="32" fill="none" stroke="#3c3c3c" strokeWidth="1"/>
+      <circle cx={rwx} cy={rwy} r="9" fill="#141414" stroke="#3a3a3a" strokeWidth="1.2"/>
+      <circle cx={rwx} cy={rwy} r="4" fill="#B8860B"/>
+      {/* red brake caliper hint */}
+      <path
+        d={`M ${rwx - 8} ${rwy + 27} A 27 27 0 0 0 ${rwx + 8} ${rwy + 27}`}
+        stroke="#990000" strokeWidth="3.5" fill="none" strokeLinecap="round" opacity="0.7"
+      />
     </svg>
   )
 }

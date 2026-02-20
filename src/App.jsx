@@ -44,17 +44,24 @@ function CustomCursor() {
   }, [])
   return (
     <div ref={cursorRef} className={`custom-cursor${spinning ? ' custom-cursor--spin' : ''}`}>
+      {/* Luxury 3-spoke GT steering wheel — hairline gold */}
       <svg viewBox="0 0 40 40" width="28" height="28" fill="none">
-        <circle cx="20" cy="20" r="17" stroke="#CC0000" strokeWidth="2.5"/>
-        <circle cx="20" cy="20" r="5" fill="#CC0000"/>
-        {[0,60,120,180,240,300].map(a => {
+        {/* outer glow */}
+        <circle cx="20" cy="20" r="16" stroke="rgba(201,162,39,0.18)" strokeWidth="3.5" fill="none"/>
+        {/* main ring */}
+        <circle cx="20" cy="20" r="16" stroke="#C9A227" strokeWidth="1.4" fill="none"/>
+        {/* Y-shaped 3 spokes (120° apart, GT wheel style) */}
+        {[270, 30, 150].map(a => {
           const rad = a * Math.PI / 180
           return <line key={a}
-            x1={20 + Math.cos(rad) * 5}  y1={20 + Math.sin(rad) * 5}
-            x2={20 + Math.cos(rad) * 15} y2={20 + Math.sin(rad) * 15}
-            stroke="#CC0000" strokeWidth="2.2" strokeLinecap="round"/>
+            x1={20 + Math.cos(rad) * 5.5}  y1={20 + Math.sin(rad) * 5.5}
+            x2={20 + Math.cos(rad) * 14.6} y2={20 + Math.sin(rad) * 14.6}
+            stroke="#C9A227" strokeWidth="1.6" strokeLinecap="round"/>
         })}
-        <circle cx="20" cy="20" r="17" stroke="rgba(255,255,255,0.12)" strokeWidth="1"/>
+        {/* hub ring */}
+        <circle cx="20" cy="20" r="4" stroke="#C9A227" strokeWidth="1.2" fill="rgba(201,162,39,0.1)"/>
+        {/* centre pip */}
+        <circle cx="20" cy="20" r="1.6" fill="#C9A227"/>
       </svg>
     </div>
   )
