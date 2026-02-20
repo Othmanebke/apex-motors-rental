@@ -2238,23 +2238,7 @@ footer { background: var(--bg); border-top: 1px solid var(--border); padding: 4r
   .toast { max-width: calc(100vw - 1.5rem); }
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   CUSTOM WHEEL CURSOR
-═══════════════════════════════════════════════════════════════ */
-body { cursor: none; }
-a, button, [role="button"], input, select, textarea, label { cursor: none; }
-.custom-cursor {
-  position: fixed; top: 0; left: 0; z-index: 99999;
-  pointer-events: none; will-change: transform;
-  transition: transform 0.04s linear;
-}
-.custom-cursor--spin svg {
-  animation: wheelSpin 0.16s linear;
-}
-@keyframes wheelSpin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(60deg); }
-}
+
 
 /* ═══════════════════════════════════════════════════════════════
    STATS COUNTER  (home page)
@@ -2267,15 +2251,14 @@ a, button, [role="button"], input, select, textarea, label { cursor: none; }
   max-width: 960px;
   margin: 0 auto;
   background: rgba(10,10,10,0.72);
-  border: 1px solid rgba(201,162,39,0.18);
+  border: 1px solid rgba(204,0,0,0.22);
   border-radius: 4px;
-  /* top/bottom hairline gold */
   box-shadow:
-    0 1px 0 rgba(201,162,39,0.25) inset,
-    0 -1px 0 rgba(201,162,39,0.12) inset,
+    0 1px 0 rgba(204,0,0,0.3) inset,
+    0 -1px 0 rgba(204,0,0,0.12) inset,
     0 24px 60px rgba(0,0,0,0.45);
   backdrop-filter: blur(12px);
-  transform: translateY(-32px);  /* overlap hero slightly */
+  transform: translateY(-32px);
   position: relative; z-index: 2;
 }
 .stat-counter__grid {
@@ -2284,7 +2267,7 @@ a, button, [role="button"], input, select, textarea, label { cursor: none; }
 }
 .stat-counter__sep {
   width: 1px;
-  background: linear-gradient(to bottom, transparent 12%, rgba(201,162,39,0.22) 40%, rgba(201,162,39,0.22) 60%, transparent 88%);
+  background: linear-gradient(to bottom, transparent 12%, rgba(204,0,0,0.25) 40%, rgba(204,0,0,0.25) 60%, transparent 88%);
   flex-shrink: 0;
 }
 .stat-counter__item {
@@ -2297,15 +2280,15 @@ a, button, [role="button"], input, select, textarea, label { cursor: none; }
 .stat-counter__icon-wrap {
   display: flex; align-items: center; justify-content: center;
   width: 44px; height: 44px;
-  border: 1px solid rgba(201,162,39,0.28);
+  border: 1px solid rgba(204,0,0,0.3);
   border-radius: 50%;
-  background: rgba(201,162,39,0.06);
-  color: #C9A227;
+  background: rgba(204,0,0,0.06);
+  color: #CC0000;
   transition: background 0.3s, border-color 0.3s;
 }
 .stat-counter__item:hover .stat-counter__icon-wrap {
-  background: rgba(201,162,39,0.12);
-  border-color: rgba(201,162,39,0.5);
+  background: rgba(204,0,0,0.14);
+  border-color: rgba(204,0,0,0.55);
 }
 .stat-svg-icon {
   width: 22px; height: 22px; display: block;
@@ -2313,7 +2296,7 @@ a, button, [role="button"], input, select, textarea, label { cursor: none; }
 /* value */
 .stat-counter__val {
   font-size: 2.4rem; font-weight: 800; line-height: 1; letter-spacing: -0.02em;
-  background: linear-gradient(135deg, #e8d28a 0%, #C9A227 50%, #a07c10 100%);
+  background: linear-gradient(135deg, #ff4444 0%, #CC0000 55%, #880000 100%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
 /* label */

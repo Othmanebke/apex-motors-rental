@@ -25,48 +25,6 @@ const pageVariants = {
 
 const NO_NAVBAR = ['/login', '/register', '/forgot', '/dashboard', '/admin']
 
-/* ── Custom Wheel Cursor ── */
-function CustomCursor() {
-  const cursorRef = useRef(null)
-  const [spinning, setSpinning] = useState(false)
-  const spinTimer = useRef(null)
-  useEffect(() => {
-    const move = (e) => {
-      if (cursorRef.current) {
-        cursorRef.current.style.transform = `translate(${e.clientX - 14}px, ${e.clientY - 14}px)`
-      }
-      setSpinning(true)
-      clearTimeout(spinTimer.current)
-      spinTimer.current = setTimeout(() => setSpinning(false), 180)
-    }
-    window.addEventListener('mousemove', move)
-    return () => window.removeEventListener('mousemove', move)
-  }, [])
-  return (
-    <div ref={cursorRef} className={`custom-cursor${spinning ? ' custom-cursor--spin' : ''}`}>
-      {/* Luxury 3-spoke GT steering wheel — hairline gold */}
-      <svg viewBox="0 0 40 40" width="28" height="28" fill="none">
-        {/* outer glow */}
-        <circle cx="20" cy="20" r="16" stroke="rgba(201,162,39,0.18)" strokeWidth="3.5" fill="none"/>
-        {/* main ring */}
-        <circle cx="20" cy="20" r="16" stroke="#C9A227" strokeWidth="1.4" fill="none"/>
-        {/* Y-shaped 3 spokes (120° apart, GT wheel style) */}
-        {[270, 30, 150].map(a => {
-          const rad = a * Math.PI / 180
-          return <line key={a}
-            x1={20 + Math.cos(rad) * 5.5}  y1={20 + Math.sin(rad) * 5.5}
-            x2={20 + Math.cos(rad) * 14.6} y2={20 + Math.sin(rad) * 14.6}
-            stroke="#C9A227" strokeWidth="1.6" strokeLinecap="round"/>
-        })}
-        {/* hub ring */}
-        <circle cx="20" cy="20" r="4" stroke="#C9A227" strokeWidth="1.2" fill="rgba(201,162,39,0.1)"/>
-        {/* centre pip */}
-        <circle cx="20" cy="20" r="1.6" fill="#C9A227"/>
-      </svg>
-    </div>
-  )
-}
-
 /* ── Konami Porsche Easter Egg ── */
 const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a']
 function KonamiPorsche() {
@@ -137,7 +95,6 @@ function AppShell() {
   const hideChrome = NO_NAVBAR.some(p => location.pathname.startsWith(p))
   return (
     <>
-      <CustomCursor />
       <KonamiPorsche />
       {!hideChrome && <Navbar />}
       <AnimatedRoutes />
