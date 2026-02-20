@@ -73,7 +73,13 @@ export default function ReservationModal({ car, onClose }) {
   const [endDate, setEndDate] = useState(null)
   const [pickingEnd, setPickingEnd] = useState(false)
   const [selectedOptions, setSelectedOptions] = useState([])
-  const [step, setStep] = useState(1) // 1=dates, 2=options, 3=confirm, 4=done
+  const [step, setStep] = useState(1) // 1=dates, 2=options, 3=recap, 4=payment, 5=done
+  const [payName, setPayName]       = useState('')
+  const [payCard, setPayCard]       = useState('')
+  const [payExpiry, setPayExpiry]   = useState('')
+  const [payCVV, setPayCVV]         = useState('')
+  const [payLoading, setPayLoading] = useState(false)
+  const [payError, setPayError]     = useState('')
 
   const handleDateSelect = useCallback((date) => {
     if (!startDate || pickingEnd) {
@@ -124,8 +130,8 @@ export default function ReservationModal({ car, onClose }) {
       const existing = JSON.parse(localStorage.getItem('apexHistory') || '[]')
       localStorage.setItem('apexHistory', JSON.stringify([reservation, ...existing]))
     } catch {}
-    showToast('Réservation confirmée ! 🎉', 'success')
-    setStep(4)
+    showToast('Réservation confirmée !', 'success')
+    setStep(5)
   }
 
   return (
@@ -133,10 +139,11 @@ export default function ReservationModal({ car, onClose }) {
       <div className="modal">
         <div className="modal-header">
           <span className="modal-title">
-            {step === 1 && '📅 Sélectionner les dates'}
-            {step === 2 && '⚙️ Options supplémentaires'}
-            {step === 3 && '✅ Confirmer la réservation'}
-            {step === 4 && '🎉 Réservation confirmée !'}
+            {step === 1 && 'Sélectionner les dates'}
+            {step === 2 && 'Options supplémentaires'}
+            {step === 3 && 'Récapitulatif'}
+            {step === 4 && 'Paiement sécurisé'}
+            {step === 5 && 'Réservation confirmée'}
           </span>
           <button className="modal-close" onClick={onClose}>✕</button>
         </div>
@@ -309,8 +316,103 @@ export default function ReservationModal({ car, onClose }) {
           </div>
         )}
 
-        {/* ─── STEP 4: Done ─── */}
+        {/* ─── STEP 4: Payment ─── */}
         {step === 4 && (
+          <div className="pay-form">
+            <div className="pay-input-group">
+              <label className="pay-label">Titulaire de la carte</label>
+              <input
+                className="pay-input"
+                type="text"
+                placeholder="Jean Dupont"
+                value={payName}
+                onChange={e => setPayName(e.target.value)}
+              />
+            </div>
+            <div className="pay-input-group pay-card-type">
+              <label className="pay-label">Numéro de carte</label>
+              <input
+                className="pay-input"
+                type="text"
+                inputMode="numeric"
+                maxLength={19}
+                placeholder="4242 4242 4242 4242"
+                value={payCard}
+                onChange={e => {
+                  const v = e.target.value.replace(/\D/g, '').slice(0, 16)
+                  setPayCard(v.replace(/(\d{4})(?=\d)/g, '$1 '))
+                }}
+              />
+              <span className="pay-card-icon">
+                {payCard.startsWith('4') ? 'VISA' : payCard.startsWith('5') ? 'MC' : ''}
+              </span>
+            </div>
+            <div className="pay-row">
+              <div className="pay-input-group">
+                <label className="pay-label">Expiration (MM/AA)</label>
+                <input
+                  className="pay-input"
+                  type="text"
+                  inputMode="numeric"
+                  maxLength={5}
+                  placeholder="08/28"
+                  value={payExpiry}
+                  onChange={e => {
+                    const v = e.target.value.replace(/\D/g, '').slice(0, 4)
+                    setPayExpiry(v.length > 2 ? `${v.slice(0,2)}/${v.slice(2)}` : v)
+                  }}
+                />
+              </div>
+              <div className="pay-input-group">
+                <label className="pay-label">CVV</label>
+                <input
+                  className="pay-input"
+                  type="password"
+                  inputMode="numeric"
+                  maxLength={4}
+                  placeholder="•••"
+                  value={payCVV}
+                  onChange={e => setPayCVV(e.target.value.replace(/\D/g, '').slice(0, 4))}
+                />
+              </div>
+            </div>
+
+            {payError && <div className="pay-error">{payError}</div>}
+
+            <div className="pay-secure">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              Paiement 100 % sécurisé • SSL chiffré
+            </div>
+
+            <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.5rem' }}>
+              <button className="pill-btn dark" style={{ flex: 1, justifyContent: 'center', padding: '1rem', borderRadius: 10 }} onClick={() => setStep(3)} disabled={payLoading}>
+                ← Retour
+              </button>
+              <button
+                className="pill-btn white pay-btn"
+                style={{ flex: 2, padding: '1rem', borderRadius: 10, fontSize: '0.92rem', opacity: payLoading ? 0.7 : 1 }}
+                disabled={payLoading}
+                onClick={() => {
+                  if (!payName.trim()) { setPayError('Nom du titulaire requis.'); return }
+                  if (payCard.replace(/\s/g,'').length < 16) { setPayError('Numéro de carte invalide.'); return }
+                  if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(payExpiry)) { setPayError('Date invalide (MM/AA).'); return }
+                  if (payCVV.length < 3) { setPayError('CVV invalide.'); return }
+                  setPayError('')
+                  setPayLoading(true)
+                  setTimeout(() => { setPayLoading(false); handleConfirm() }, 2000)
+                }}
+              >
+                {payLoading
+                  ? <><span className="pay-spin" />Traitement...</>
+                  : `Payer ${discountedTotal.toLocaleString('fr-FR')} €`
+                }
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* ─── STEP 5: Done ─── */}
+        {step === 5 && (
           <div className="modal-done">
             <div className="modal-done__icon">🎉</div>
             <h3 className="modal-done__title">Réservation confirmée !</h3>

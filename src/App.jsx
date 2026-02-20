@@ -16,6 +16,9 @@ import AuthPage from './pages/AuthPage'
 import ForgotPage from './pages/ForgotPage'
 import DashboardPage from './pages/DashboardPage'
 import AdminPage from './pages/AdminPage'
+import CguPage from './pages/CguPage'
+import MentionsLegalesPage from './pages/MentionsLegalesPage'
+import CookiesPage from './pages/CookiesPage'
 
 const pageVariants = {
   initial: { opacity: 0, y: 16 },
@@ -70,6 +73,9 @@ function AnimatedRoutes() {
           <Route path="/forgot" element={<ForgotPage />} />
           <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
           <Route path="/admin" element={<ProtectedRoute adminOnly><AdminPage /></ProtectedRoute>} />
+          <Route path="/cgu" element={<CguPage />} />
+          <Route path="/mentions-legales" element={<MentionsLegalesPage />} />
+          <Route path="/cookies" element={<CookiesPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
         {!hideChrome && <Footer />}
