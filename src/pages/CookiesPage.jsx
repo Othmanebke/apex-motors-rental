@@ -11,7 +11,7 @@ const COOKIE_TYPES = [
     type: 'Cookies fonctionnels',
     required: false,
     desc: 'Permettent de mémoriser vos préférences (véhicules favoris, filtres) pour améliorer votre expérience entre les visites.',
-    examples: ['Favoris (apexWishlist)', 'Historique de réservations (apexHistory)', 'Dernières recherches'],
+    examples: ['Favoris (ocarsWishlist)', 'Historique de réservations (ocarsHistory)', 'Dernières recherches'],
   },
   {
     type: 'Cookies analytiques',
@@ -76,7 +76,7 @@ export default function CookiesPage() {
           <div className="legal-section">
             <h2 className="legal-section__title">Contact</h2>
             <p className="legal-section__text">
-              Pour toute question relative à notre politique cookies, contactez-nous à <a href="mailto:rgpd@apex-motors.fr">rgpd@apex-motors.fr</a>.
+              Pour toute question relative à notre politique cookies, contactez-nous à <a href="mailto:rgpd@ocars.fr">rgpd@ocars.fr</a>.
             </p>
           </div>
         </div>

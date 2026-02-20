@@ -6,8 +6,8 @@ import { cars } from '../data/cars'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
 
-function getHistory() { try { return JSON.parse(localStorage.getItem('apexHistory') || '[]') } catch { return [] } }
-function getUsers()   { try { return JSON.parse(localStorage.getItem('apexUsers')   || '[]') } catch { return [] } }
+function getHistory() { try { return JSON.parse(localStorage.getItem('ocarsHistory') || '[]') } catch { return [] } }
+function getUsers()   { try { return JSON.parse(localStorage.getItem('ocarsUsers')   || '[]') } catch { return [] } }
 
 const STATUS_CLS = { confirmed: 'status--confirmed', pending: 'status--pending', cancelled: 'status--cancelled' }
 const STATUS_LBL = { confirmed: 'Confirmée', pending: 'En attente', cancelled: 'Annulée' }
@@ -283,7 +283,7 @@ export default function AdminPage() {
   const cancelRes = (id) => {
     const next = history.map(r => r.id === id ? { ...r, status: 'cancelled' } : r)
     setHistory(next)
-    localStorage.setItem('apexHistory', JSON.stringify(next))
+    localStorage.setItem('ocarsHistory', JSON.stringify(next))
     showToast('Réservation annulée.', 'info')
   }
 
@@ -299,7 +299,7 @@ export default function AdminPage() {
         <div className="dash-sidebar__top">
           <div className="dash-sidebar__avatar dash-sidebar__avatar--admin">A</div>
           <div className="dash-sidebar__name">Administration</div>
-          <div className="dash-sidebar__email">admin@apex.fr</div>
+          <div className="dash-sidebar__email">admin@ocars.fr</div>
         </div>
 
         <nav className="dash-nav">

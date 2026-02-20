@@ -5,14 +5,14 @@ export default function Footer() {
     <footer className="site-footer">
       <div className="site-footer__inner">
         <div className="site-footer__brand">
-          <div className="site-footer__logo">APEX MOTORS</div>
+          <div className="site-footer__logo">O'cars</div>
           <p className="site-footer__tagline">
             Location de voitures premium.<br />
             Livraison partout en France.
           </p>
           <div className="site-footer__contact">
             <a href="tel:+33142000000">+33 1 42 00 00 00</a>
-            <a href="mailto:contact@apex-motors.fr">contact@apex-motors.fr</a>
+            <a href="mailto:contact@ocars.fr">contact@ocars.fr</a>
           </div>
         </div>
 
@@ -33,7 +33,7 @@ export default function Footer() {
       </div>
 
       <div className="site-footer__bottom">
-        <span>© {new Date().getFullYear()} Apex Motors. Tous droits réservés.</span>
+        <span>© {new Date().getFullYear()} O'cars. Tous droits réservés.</span>
       </div>
     </footer>
   )

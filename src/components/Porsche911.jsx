@@ -86,8 +86,8 @@ export default function Porsche911() {
       <path d="M 484 108 Q 490 116 490 130" stroke="#CC0000" strokeWidth="4.5" fill="none" strokeLinecap="round"/>
       <path d="M 486 110 Q 490 117 490 128" stroke="#ff5555" strokeWidth="1.5" fill="none" strokeLinecap="round" opacity="0.65"/>
 
-      {/* ── "APEX MOTORS" door badge ── */}
-      <text x="200" y="112" fill="rgba(184,134,11,0.45)" fontSize="8" fontFamily="'Montserrat',sans-serif" fontWeight="800" letterSpacing="3.5">APEX MOTORS</text>
+      {/* ── "O'cars" door badge ── */}
+      <text x="200" y="112" fill="rgba(184,134,11,0.45)" fontSize="8" fontFamily="'Montserrat',sans-serif" fontWeight="800" letterSpacing="3.5">O'cars</text>
       {/* 911 badge */}
       <text x="356" y="74" fill="rgba(255,255,255,0.35)" fontSize="7" fontFamily="monospace" fontWeight="700" letterSpacing="2">911</text>
 

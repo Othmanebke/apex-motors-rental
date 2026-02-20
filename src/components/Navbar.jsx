@@ -51,7 +51,7 @@ const IconBooking = () => (
 )
 
 function getWishlistCount() {
-  try { return JSON.parse(localStorage.getItem('apexWishlist') || '[]').length } catch { return 0 }
+  try { return JSON.parse(localStorage.getItem('ocarsWishlist') || '[]').length } catch { return 0 }
 }
 
 export default function Navbar() {
@@ -106,9 +106,7 @@ export default function Navbar() {
   return (
     <nav className={`navbar${scrolled ? ' navbar--scrolled' : ''}`}>
       <Link to="/" className="navbar-logo">
-        <span className="logo-dot" />
-        Luxury
-      </Link>
+        <span className="logo-dot" />O'cars</Link>
 
       <ul className="navbar-links">
         <li><Link to="/" className={pathname === '/' ? 'active' : ''}>Accueil</Link></li>

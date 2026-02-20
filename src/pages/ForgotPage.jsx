@@ -26,9 +26,7 @@ export default function ForgotPage() {
 
       <div className="auth-card">
         <Link to="/" className="auth-logo">
-          <span className="logo-dot" />
-          Luxury
-        </Link>
+          <span className="logo-dot" />O'cars</Link>
 
         <div className="auth-card__header">
           <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>🔑</div>

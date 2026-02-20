@@ -8,10 +8,10 @@ const CARS_PER_PAGE = 9
 
 // ── Coup de cœur helpers ──────────────────────────────────────────────────────
 function getWishlist() {
-  try { return JSON.parse(localStorage.getItem('apexWishlist') || '[]') } catch { return [] }
+  try { return JSON.parse(localStorage.getItem('ocarsWishlist') || '[]') } catch { return [] }
 }
 function saveWishlist(arr) {
-  localStorage.setItem('apexWishlist', JSON.stringify(arr))
+  localStorage.setItem('ocarsWishlist', JSON.stringify(arr))
 }
 
 // ── Heart button ──────────────────────────────────────────────────────────────

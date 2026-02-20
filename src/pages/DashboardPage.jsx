@@ -7,8 +7,8 @@ import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
 
 /* ─── helpers ─── */
-function getHistory() { try { return JSON.parse(localStorage.getItem('apexHistory') || '[]') } catch { return [] } }
-function getWishlist() { try { return JSON.parse(localStorage.getItem('apexWishlist') || '[]') } catch { return [] } }
+function getHistory() { try { return JSON.parse(localStorage.getItem('ocarsHistory') || '[]') } catch { return [] } }
+function getWishlist() { try { return JSON.parse(localStorage.getItem('ocarsWishlist') || '[]') } catch { return [] } }
 const STATUS_CLS = { confirmed: 'status--confirmed', pending: 'status--pending', cancelled: 'status--cancelled' }
 const STATUS_LBL = { confirmed: 'Confirmée', pending: 'En attente', cancelled: 'Annulée' }
 
@@ -338,7 +338,7 @@ export default function DashboardPage() {
   const cancelRes = (id) => {
     const next = allHistory.map(r => r.id === id ? { ...r, status: 'cancelled' } : r)
     setAllHistory(next)
-    localStorage.setItem('apexHistory', JSON.stringify(next))
+    localStorage.setItem('ocarsHistory', JSON.stringify(next))
     showToast('Réservation annulée.', 'info')
   }
 

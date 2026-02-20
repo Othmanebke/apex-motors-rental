@@ -5,7 +5,7 @@ import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
 
 function getHistory() {
-  try { return JSON.parse(localStorage.getItem('apexHistory') || '[]') } catch { return [] }
+  try { return JSON.parse(localStorage.getItem('ocarsHistory') || '[]') } catch { return [] }
 }
 
 const STATUS_LABEL = { confirmed: 'Confirmée', pending: 'En attente', cancelled: 'Annulée' }
@@ -61,13 +61,13 @@ export default function ReservationsPage() {
   const cancelReservation = (id) => {
     const next = history.map(r => r.id === id ? { ...r, status: 'cancelled' } : r)
     setHistory(next)
-    localStorage.setItem('apexHistory', JSON.stringify(next))
+    localStorage.setItem('ocarsHistory', JSON.stringify(next))
   }
 
   const clearAll = () => {
     if (!window.confirm('Supprimer tout l\'historique ?')) return
     setHistory([])
-    localStorage.removeItem('apexHistory')
+    localStorage.removeItem('ocarsHistory')
   }
 
   const totalSpent = history

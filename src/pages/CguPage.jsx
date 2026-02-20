@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom'
 const sections = [
   {
     title: 'Article 1 — Objet',
-    text: `Les présentes conditions générales d'utilisation (CGU) régissent l'accès et l'utilisation du site Apex Motors, service de location de véhicules premium. En utilisant ce site, vous acceptez sans réserve les présentes CGU.`,
+    text: `Les présentes conditions générales d'utilisation (CGU) régissent l'accès et l'utilisation du site O'cars, service de location de véhicules premium. En utilisant ce site, vous acceptez sans réserve les présentes CGU.`,
   },
   {
     title: 'Article 2 — Accès au service',
-    text: `Le service est accessible 24h/24 et 7j/7, sous réserve des opérations de maintenance. Apex Motors se réserve le droit de suspendre l'accès sans préavis pour des raisons techniques ou de sécurité.`,
+    text: `Le service est accessible 24h/24 et 7j/7, sous réserve des opérations de maintenance. O'cars se réserve le droit de suspendre l'accès sans préavis pour des raisons techniques ou de sécurité.`,
   },
   {
     title: 'Article 3 — Création de compte',
@@ -15,7 +15,7 @@ const sections = [
   },
   {
     title: 'Article 4 — Réservations',
-    text: `Toute réservation est soumise à validation par notre équipe. La confirmation vous est adressée par email dans un délai de 30 minutes. Apex Motors se réserve le droit de refuser toute réservation sans justification.`,
+    text: `Toute réservation est soumise à validation par notre équipe. La confirmation vous est adressée par email dans un délai de 30 minutes. O'cars se réserve le droit de refuser toute réservation sans justification.`,
   },
   {
     title: 'Article 5 — Conditions financières',
@@ -27,7 +27,7 @@ const sections = [
   },
   {
     title: 'Article 7 — Propriété intellectuelle',
-    text: `L'ensemble du contenu de ce site (textes, images, logos, SVG) est la propriété exclusive d'Apex Motors. Toute reproduction sans autorisation écrite est interdite.`,
+    text: `L'ensemble du contenu de ce site (textes, images, logos, SVG) est la propriété exclusive d'O'cars. Toute reproduction sans autorisation écrite est interdite.`,
   },
   {
     title: 'Article 8 — Droit applicable',

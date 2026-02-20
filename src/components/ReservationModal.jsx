@@ -127,8 +127,8 @@ export default function ReservationModal({ car, onClose }) {
       createdAt: new Date().toISOString(),
     }
     try {
-      const existing = JSON.parse(localStorage.getItem('apexHistory') || '[]')
-      localStorage.setItem('apexHistory', JSON.stringify([reservation, ...existing]))
+      const existing = JSON.parse(localStorage.getItem('ocarsHistory') || '[]')
+      localStorage.setItem('ocarsHistory', JSON.stringify([reservation, ...existing]))
     } catch {}
     showToast('Réservation confirmée !', 'success')
     setStep(5)

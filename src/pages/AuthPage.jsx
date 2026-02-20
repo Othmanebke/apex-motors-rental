@@ -91,7 +91,7 @@ function OAuthPopup({ provider, onClose, onSuccess }) {
                 Entrez votre adresse {isGoogle ? 'Gmail' : 'Facebook'}
               </p>
               <p className="oauth-popup__hint">
-                Apex Motors utilisera votre email pour créer ou retrouver votre compte.
+                O'cars utilisera votre email pour créer ou retrouver votre compte.
               </p>
               <div className="oauth-popup__field">
                 <input
@@ -138,7 +138,7 @@ function OAuthPopup({ provider, onClose, onSuccess }) {
         {/* Footer */}
         <div className="oauth-popup__footer">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          Connexion chiffrée SSL • Apex Motors ne stocke pas votre mot de passe
+          Connexion chiffrée SSL • O'cars ne stocke pas votre mot de passe
         </div>
       </div>
     </div>
@@ -216,7 +216,7 @@ export default function AuthPage() {
     setLLoading(false)
     if (!res.ok) { setLError(res.error); return }
     showToast('Connexion réussie — bienvenue !', 'success')
-    navigate(lForm.email === 'admin@apex.fr' ? '/admin' : '/dashboard')
+    navigate(lForm.email === 'admin@ocars.fr' ? '/admin' : '/dashboard')
   }
 
   /* ── Register submit ── */
@@ -279,9 +279,7 @@ export default function AuthPage() {
       {/* ── Auth card ── */}
       <div className={`auth-card${mode === 'register' ? ' auth-card--wide' : ''} ${formVisible ? 'auth-card--visible' : 'auth-card--hidden'}`}>
         <Link to="/" className="auth-logo">
-          <span className="logo-dot" />
-          Luxury
-        </Link>
+          <span className="logo-dot" />O'cars</Link>
 
         {/* ── Mode toggle tabs ── */}
         <div className="auth-tabs">
@@ -304,7 +302,7 @@ export default function AuthPage() {
         <p className="auth-card__sub" style={{ textAlign: 'center', marginBottom: '1.25rem' }}>
           {mode === 'login'
             ? 'Accédez à votre espace personnel.'
-              : "Rejoignez Apex Motors et profitez d'avantages exclusifs."}
+              : "Rejoignez O'cars et profitez d'avantages exclusifs."}
         </p>
 
         {/* ── Social buttons ── */}
@@ -382,7 +380,7 @@ export default function AuthPage() {
             <button
               type="button"
               className="auth-demo__btn"
-              onClick={() => setLForm({ email: 'admin@apex.fr', password: 'apex2026' })}
+              onClick={() => setLForm({ email: 'admin@ocars.fr', password: 'apex2026' })}
             >
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
               Remplir Admin

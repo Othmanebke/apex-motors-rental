@@ -21,7 +21,7 @@ export default function LoginPage() {
     setLoading(false)
     if (!res.ok) { setError(res.error); return }
     showToast('Connexion réussie — bienvenue !', 'success')
-    navigate(form.email === 'admin@apex.fr' ? '/admin' : '/dashboard')
+    navigate(form.email === 'admin@ocars.fr' ? '/admin' : '/dashboard')
   }
 
   return (
@@ -33,9 +33,7 @@ export default function LoginPage() {
 
       <div className="auth-card">
         <Link to="/" className="auth-logo">
-          <span className="logo-dot" />
-          Luxury
-        </Link>
+          <span className="logo-dot" />O'cars</Link>
 
         <div className="auth-card__header">
           <h1 className="auth-card__title">Connexion</h1>
@@ -92,7 +90,7 @@ export default function LoginPage() {
 
         <div className="auth-divider"><span>accès démo</span></div>
         <div className="auth-demo">
-          <button className="auth-demo__btn" onClick={() => setForm({ email: 'admin@apex.fr', password: 'apex2026' })}>
+          <button className="auth-demo__btn" onClick={() => setForm({ email: 'admin@ocars.fr', password: 'apex2026' })}>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
             Admin
           </button>

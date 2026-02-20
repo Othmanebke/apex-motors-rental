@@ -4,18 +4,18 @@ const ADMIN = {
   id: 'admin',
   nom: 'Othmane',
   prenom: 'Admin',
-  email: 'admin@apex.fr',
+  email: 'admin@ocars.fr',
   password: 'apex2026',
   role: 'admin',
   createdAt: '2024-01-01T00:00:00.000Z',
 }
 
 function getUsers() {
-  try { return JSON.parse(localStorage.getItem('apexUsers') || '[]') } catch { return [] }
+  try { return JSON.parse(localStorage.getItem('ocarsUsers') || '[]') } catch { return [] }
 }
-function saveUsers(arr) { localStorage.setItem('apexUsers', JSON.stringify(arr)) }
+function saveUsers(arr) { localStorage.setItem('ocarsUsers', JSON.stringify(arr)) }
 function getCurrentUser() {
-  try { return JSON.parse(localStorage.getItem('apexCurrentUser') || 'null') } catch { return null }
+  try { return JSON.parse(localStorage.getItem('ocarsCurrentUser') || 'null') } catch { return null }
 }
 
 const AuthContext = createContext(null)
@@ -26,14 +26,14 @@ export function AuthProvider({ children }) {
   const login = (email, password) => {
     if (email.trim() === ADMIN.email && password === ADMIN.password) {
       setUser(ADMIN)
-      localStorage.setItem('apexCurrentUser', JSON.stringify(ADMIN))
+      localStorage.setItem('ocarsCurrentUser', JSON.stringify(ADMIN))
       return { ok: true }
     }
     const users = getUsers()
     const found = users.find(u => u.email.toLowerCase() === email.trim().toLowerCase() && u.password === password)
     if (!found) return { ok: false, error: 'Email ou mot de passe incorrect.' }
     setUser(found)
-    localStorage.setItem('apexCurrentUser', JSON.stringify(found))
+    localStorage.setItem('ocarsCurrentUser', JSON.stringify(found))
     return { ok: true }
   }
 
@@ -56,19 +56,19 @@ export function AuthProvider({ children }) {
     }
     saveUsers([...users, newUser])
     setUser(newUser)
-    localStorage.setItem('apexCurrentUser', JSON.stringify(newUser))
+    localStorage.setItem('ocarsCurrentUser', JSON.stringify(newUser))
     return { ok: true }
   }
 
   const logout = () => {
     setUser(null)
-    localStorage.removeItem('apexCurrentUser')
+    localStorage.removeItem('ocarsCurrentUser')
   }
 
   const updateUser = (updates) => {
     const updated = { ...user, ...updates }
     setUser(updated)
-    localStorage.setItem('apexCurrentUser', JSON.stringify(updated))
+    localStorage.setItem('ocarsCurrentUser', JSON.stringify(updated))
     if (updated.role !== 'admin') {
       const users = getUsers().map(u => u.id === updated.id ? updated : u)
       saveUsers(users)
@@ -84,7 +84,7 @@ export function AuthProvider({ children }) {
     // Admin check
     if (emailLow === ADMIN.email) {
       setUser(ADMIN)
-      localStorage.setItem('apexCurrentUser', JSON.stringify(ADMIN))
+      localStorage.setItem('ocarsCurrentUser', JSON.stringify(ADMIN))
       return { ok: true }
     }
     const users = getUsers()
@@ -92,7 +92,7 @@ export function AuthProvider({ children }) {
     const existing = users.find(u => u.email.toLowerCase() === emailLow)
     if (existing) {
       setUser(existing)
-      localStorage.setItem('apexCurrentUser', JSON.stringify(existing))
+      localStorage.setItem('ocarsCurrentUser', JSON.stringify(existing))
       return { ok: true }
     }
     // New user via social
@@ -110,7 +110,7 @@ export function AuthProvider({ children }) {
     }
     saveUsers([...users, newUser])
     setUser(newUser)
-    localStorage.setItem('apexCurrentUser', JSON.stringify(newUser))
+    localStorage.setItem('ocarsCurrentUser', JSON.stringify(newUser))
     return { ok: true }
   }
 

@@ -37,13 +37,11 @@ export default function RegisterPage() {
 
       <div className="auth-card auth-card--wide">
         <Link to="/" className="auth-logo">
-          <span className="logo-dot" />
-          Luxury
-        </Link>
+          <span className="logo-dot" />O'cars</Link>
 
         <div className="auth-card__header">
           <h1 className="auth-card__title">Créer un compte</h1>
-          <p className="auth-card__sub">Rejoignez Apex Motors et profitez d'avantages exclusifs.</p>
+          <p className="auth-card__sub">Rejoignez O'cars et profitez d'avantages exclusifs.</p>
         </div>
 
         <form onSubmit={handle} className="auth-form">

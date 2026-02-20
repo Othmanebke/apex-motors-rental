@@ -150,7 +150,7 @@ export default function CarDetailPage() {
   const car = cars.find(c => c.id === Number(id))
 
   const [wishlist, setWishlist] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('apexWishlist') || '[]') } catch { return [] }
+    try { return JSON.parse(localStorage.getItem('ocarsWishlist') || '[]') } catch { return [] }
   })
   const [activeImg, setActiveImg] = useState(0)
   const [selectedRange, setSelectedRange] = useState(null)
@@ -215,7 +215,7 @@ export default function CarDetailPage() {
   const toggleFav = () => {
     const next = isFav ? wishlist.filter(x => x !== car.id) : [...wishlist, car.id]
     setWishlist(next)
-    localStorage.setItem('apexWishlist', JSON.stringify(next))
+    localStorage.setItem('ocarsWishlist', JSON.stringify(next))
   }
 
   const days = selectedRange
