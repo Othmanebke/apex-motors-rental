@@ -1091,7 +1091,6 @@ img { display: block; }
   background: rgba(230,57,70,0.14);
   background: color-mix(in srgb, var(--offer-color, var(--racing-red)) 14%, transparent);
   border: 1px solid rgba(230,57,70,0.25);
-  border: 1px solid color-mix(in srgb, var(--offer-color, var(--racing-red)) 25%, transparent);
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
   color: var(--offer-color, var(--racing-red));
@@ -1120,7 +1119,6 @@ img { display: block; }
   background: rgba(230,57,70,0.12);
   background: color-mix(in srgb, var(--offer-color, var(--racing-red)) 12%, transparent);
   border: 1px solid rgba(230,57,70,0.4);
-  border: 1px solid color-mix(in srgb, var(--offer-color, var(--racing-red)) 40%, transparent);
   color: var(--offer-color, var(--racing-red));
   font-size: 0.85rem;
   font-weight: 600;
