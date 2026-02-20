@@ -5,7 +5,7 @@ const ADMIN = {
   nom: 'Othmane',
   prenom: 'Admin',
   email: 'admin@ocars.fr',
-  password: 'apex2026',
+  password: 'ocars2026',
   role: 'admin',
   createdAt: '2024-01-01T00:00:00.000Z',
 }

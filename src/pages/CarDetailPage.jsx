@@ -159,14 +159,14 @@ export default function CarDetailPage() {
   const [modalCar, setModalCar] = useState(null)
   const [copied, setCopied] = useState(false)
   const [reviews, setReviews] = useState(() => {
-    try { return JSON.parse(localStorage.getItem(`apexReviews_${id}`) || '[]') } catch { return [] }
+    try { return JSON.parse(localStorage.getItem(`ocarsReviews_${id}`) || '[]') } catch { return [] }
   })
   const [reviewForm, setReviewForm] = useState({ stars: 0, hover: 0, text: '', author: '' })
   const [reviewSubmitted, setReviewSubmitted] = useState(false)
 
   // Sync reviews when navigating between cars
   useEffect(() => {
-    try { setReviews(JSON.parse(localStorage.getItem(`apexReviews_${id}`) || '[]')) } catch {}
+    try { setReviews(JSON.parse(localStorage.getItem(`ocarsReviews_${id}`) || '[]')) } catch {}
     setReviewSubmitted(false)
   }, [id])
 
@@ -192,7 +192,7 @@ export default function CarDetailPage() {
     }
     const next = [newReview, ...reviews]
     setReviews(next)
-    localStorage.setItem(`apexReviews_${id}`, JSON.stringify(next))
+    localStorage.setItem(`ocarsReviews_${id}`, JSON.stringify(next))
     setReviewForm({ stars: 0, hover: 0, text: '', author: '' })
     setReviewSubmitted(true)
     setTimeout(() => setReviewSubmitted(false), 3000)

@@ -22,7 +22,7 @@ export default function RegisterPage() {
     const res = register(form)
     setLoading(false)
     if (!res.ok) { setError(res.error); return }
-    showToast('Compte créé — bienvenue chez Apex !', 'success')
+    showToast("Compte créé — bienvenue chez O'cars !", 'success')
     navigate('/dashboard')
   }
 
