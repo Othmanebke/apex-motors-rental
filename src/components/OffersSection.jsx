@@ -1,4 +1,6 @@
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
+import { useToast } from '../context/ToastContext'
 
 const IconWeekend = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" width="22" height="22">
@@ -58,6 +60,9 @@ const OFFERS = [
 ]
 
 export default function OffersSection() {
+  const { user, setForfait } = useAuth()
+  const { showToast } = useToast()
+  const navigate = useNavigate()
   return (
     <section className="offers-section" id="offers">
       <div className="section-label">Nos forfaits</div>
@@ -93,13 +98,23 @@ export default function OffersSection() {
               ))}
             </ul>
 
-            <Link to="/cars" className="offer-card__cta">
-              Réserver avec ce forfait
+            <button
+              className={`offer-card__cta${user?.forfait === offer.id ? ' offer-card__cta--active' : ''}`}
+              onClick={() => {
+                if (user) {
+                  setForfait(offer.id)
+                  showToast(`Forfait ${offer.label} activé ! 🎉`, 'success')
+                } else {
+                  navigate('/register')
+                }
+              }}
+            >
+              {user?.forfait === offer.id ? '✓ Forfait actif' : user ? 'Activer ce forfait' : 'S’inscrire pour profiter'}
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="5" y1="12" x2="19" y2="12"/>
                 <polyline points="12 5 19 12 12 19"/>
               </svg>
-            </Link>
+            </button>
           </div>
         ))}
       </div>

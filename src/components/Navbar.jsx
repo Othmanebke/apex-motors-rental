@@ -1,5 +1,6 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useEffect, useState, useRef } from 'react'
+import { useAuth } from '../context/AuthContext'
 
 const IconSearch = () => (
   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -57,6 +58,7 @@ export default function Navbar() {
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const [scrolled, setScrolled] = useState(false)
+  const { user, logout } = useAuth()
   const [menuOpen, setMenuOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
@@ -64,6 +66,7 @@ export default function Navbar() {
   const [logeOpen, setLogeOpen] = useState(false)
   const searchRef = useRef(null)
   const logeRef = useRef(null)
+  const initials = user ? `${user.prenom?.[0] || ''}${user.nom?.[0] || ''}`.toUpperCase() : ''
 
   useEffect(() => {
     const handler = (e) => {
@@ -164,9 +167,17 @@ export default function Navbar() {
             <button className="navbar-icon navbar-icon--menu" title="Menu" onClick={() => setMenuOpen(!menuOpen)}>
               <IconMenu />
             </button>
-            <Link to="/cars">
-              <button className="pill-btn red-btn">Réserver</button>
-            </Link>
+            {user ? (
+              <Link
+                to={user.role === 'admin' ? '/admin' : '/dashboard'}
+                className="navbar-avatar"
+                title={`${user.prenom || ''} ${user.nom || ''} — Mon espace`}
+              >
+                {initials}
+              </Link>
+            ) : (
+              <Link to="/login" className="pill-btn red-btn" style={{ textDecoration: 'none' }}>Connexion</Link>
+            )}
           </>
         )}
       </div>
@@ -177,7 +188,16 @@ export default function Navbar() {
           <Link to="/cars" onClick={() => setMenuOpen(false)}>Nos voitures</Link>
           <a href="/#offers" onClick={() => setMenuOpen(false)}>Forfaits</a>
           <Link to="/reservations" onClick={() => setMenuOpen(false)}>Mes réservations</Link>
-          <Link to="/cars" onClick={() => setMenuOpen(false)} style={{ color: 'var(--racing-red)', fontWeight: 600 }}>Réserver →</Link>
+          {user ? (
+            <>
+              <Link to={user.role === 'admin' ? '/admin' : '/dashboard'} onClick={() => setMenuOpen(false)} style={{ color: '#c9a227', fontWeight: 600 }}>
+                {user.role === 'admin' ? '⚙ Admin' : `👤 ${user.prenom}`}
+              </Link>
+              <button onClick={() => { logout(); setMenuOpen(false) }} style={{ background: 'none', border: 'none', color: 'var(--racing-red)', fontWeight: 600, cursor: 'pointer', padding: '0', textAlign: 'left', fontSize: '0.9rem' }}>Déconnexion</button>
+            </>
+          ) : (
+            <Link to="/login" onClick={() => setMenuOpen(false)} style={{ color: 'var(--racing-red)', fontWeight: 600 }}>Connexion →</Link>
+          )}
         </div>
       )}
     </nav>

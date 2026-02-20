@@ -1,8 +1,12 @@
 import { useState, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { OPTIONS } from '../data/cars'
+import { useAuth } from '../context/AuthContext'
+import { useToast } from '../context/ToastContext'
 import { differenceInDays, addMonths, startOfMonth, getDay, getDaysInMonth, format, isBefore, isToday } from 'date-fns'
 import { fr } from 'date-fns/locale'
+
+const FORFAIT_DISCOUNTS = { weekend: 10, semaine: 20, mois: 35 }
 
 /* ─── Mini Calendar ─── */
 function Calendar({ startDate, endDate, onSelect }) {
@@ -63,6 +67,8 @@ function Calendar({ startDate, endDate, onSelect }) {
 
 /* ─── Main Modal ─── */
 export default function ReservationModal({ car, onClose }) {
+  const { user } = useAuth()
+  const { showToast } = useToast()
   const [startDate, setStartDate] = useState(null)
   const [endDate, setEndDate] = useState(null)
   const [pickingEnd, setPickingEnd] = useState(false)
@@ -90,6 +96,9 @@ export default function ReservationModal({ car, onClose }) {
     return sum + (opt ? opt.priceDay * days : 0)
   }, 0)
   const total = basePrice + optionsTotal
+  const discountPct = user?.forfait ? (FORFAIT_DISCOUNTS[user.forfait] || 0) : 0
+  const discountAmt = Math.round(total * discountPct / 100)
+  const discountedTotal = total - discountAmt
 
   const toggleOption = (id) => {
     setSelectedOptions(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id])
@@ -100,10 +109,13 @@ export default function ReservationModal({ car, onClose }) {
     const reservation = {
       id: `res_${Date.now()}`,
       carId: car.id,
+      userId: user?.id || null,
       startDate: startDate.toISOString(),
       endDate: endDate.toISOString(),
       days,
-      total,
+      total: discountedTotal,
+      forfaitUsed: user?.forfait || null,
+      discountPct,
       options: selectedOptions.map(id => OPTIONS.find(o => o.id === id)?.label).filter(Boolean),
       status: 'confirmed',
       createdAt: new Date().toISOString(),
@@ -112,6 +124,7 @@ export default function ReservationModal({ car, onClose }) {
       const existing = JSON.parse(localStorage.getItem('apexHistory') || '[]')
       localStorage.setItem('apexHistory', JSON.stringify([reservation, ...existing]))
     } catch {}
+    showToast('Réservation confirmée ! 🎉', 'success')
     setStep(4)
   }
 
@@ -218,6 +231,18 @@ export default function ReservationModal({ car, onClose }) {
                 <span className="pl">Total</span>
                 <span className="pv">{total.toLocaleString('fr-FR')} €</span>
               </div>
+              {discountPct > 0 && (
+                <div className="price-row" style={{ color: '#4a9d6f' }}>
+                  <span className="pl">Forfait {user.forfait} −{discountPct}%</span>
+                  <span className="pv">−{discountAmt.toLocaleString('fr-FR')} €</span>
+                </div>
+              )}
+              {discountPct > 0 && (
+                <div className="price-row total" style={{ color: '#4a9d6f' }}>
+                  <span className="pl">Total réduit</span>
+                  <span className="pv">{discountedTotal.toLocaleString('fr-FR')} €</span>
+                </div>
+              )}
             </div>
 
             <div style={{ display: 'flex', gap: '0.75rem' }}>
@@ -256,8 +281,18 @@ export default function ReservationModal({ car, onClose }) {
               <div className="price-row total">
                 <span className="pl">Total à régler</span>
                 <span className="pv">{total.toLocaleString('fr-FR')} €</span>
-              </div>
-            </div>
+              </div>              {discountPct > 0 && (
+                <div className="price-row" style={{ color: '#4a9d6f' }}>
+                  <span className="pl">Forfait {user.forfait} −{discountPct}%</span>
+                  <span className="pv">−{discountAmt.toLocaleString('fr-FR')} €</span>
+                </div>
+              )}
+              {discountPct > 0 && (
+                <div className="price-row total" style={{ color: '#4a9d6f' }}>
+                  <span className="pl">Vous payez</span>
+                  <span className="pv">{discountedTotal.toLocaleString('fr-FR')} €</span>
+                </div>
+              )}            </div>
 
             <div style={{ display: 'flex', gap: '0.75rem' }}>
               <button className="pill-btn dark" style={{ flex: 1, justifyContent: 'center', padding: '1rem', borderRadius: 10 }} onClick={() => setStep(2)}>
@@ -285,7 +320,7 @@ export default function ReservationModal({ car, onClose }) {
               <div className="modal-done__row"><span>Du</span><strong>{startDate && format(startDate, 'dd/MM/yyyy')}</strong></div>
               <div className="modal-done__row"><span>Au</span><strong>{endDate && format(endDate, 'dd/MM/yyyy')}</strong></div>
               <div className="modal-done__row"><span>Durée</span><strong>{days} jour{days > 1 ? 's' : ''}</strong></div>
-              <div className="modal-done__row modal-done__row--total"><span>Total</span><strong>{total.toLocaleString('fr-FR')} €</strong></div>
+              <div className="modal-done__row modal-done__row--total"><span>Total</span><strong>{discountedTotal.toLocaleString('fr-FR')} €</strong></div>
             </div>
             <div className="modal-done__actions">
               <Link to="/reservations" className="modal-done__btn-link" onClick={onClose}>Voir mes réservations →</Link>
